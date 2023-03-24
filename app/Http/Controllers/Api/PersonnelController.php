@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Actions\UserAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Personnel;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PersonnelController extends Controller
@@ -11,55 +16,75 @@ class PersonnelController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index()
     {
         //
+        $personnels = Personnel::query()
+            ->get();
+
+        return response()->json(compact('personnels'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateUserRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request): JsonResponse
     {
         //
+        $user = UserAction::create($request);
+
+        $personnel = Personnel::query()->create([
+            'user_id' => $user->id,
+        ]);
+
+        return response()->json(compact('personnel'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Personnel  $personnel
-     * @return \Illuminate\Http\Response
+     * @param Personnel $personnel
+     * @return JsonResponse
      */
-    public function show(Personnel $personnel)
+    public function show(Personnel $personnel): JsonResponse
     {
         //
+        return response()->json(compact('personnel'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Personnel  $personnel
-     * @return \Illuminate\Http\Response
+     * @param UpdateUserRequest $request
+     * @param Personnel $personnel
+     * @return JsonResponse
      */
-    public function update(Request $request, Personnel $personnel)
+    public function update(UpdateUserRequest $request, Personnel $personnel): JsonResponse
     {
         //
+        $personnel->user->update($request->all());
+
+        return response()->json(compact('personnel'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Personnel  $personnel
-     * @return \Illuminate\Http\Response
+     * @param Personnel $personnel
+     * @return JsonResponse
      */
-    public function destroy(Personnel $personnel)
+    public function destroy(Personnel $personnel): JsonResponse
     {
         //
+        $personnel->delete();
+
+        return response()->json([
+            'message'=>'Deleted',
+        ]);
     }
 }
