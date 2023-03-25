@@ -97,7 +97,7 @@ class PatientController extends Controller
         $patient->delete();
 
         return response()->json([
-            'message' => 'deleted',
+            'message' => 'Deleted',
         ]);
     }
 }
