@@ -6,7 +6,9 @@ use App\Http\Controllers\Actions\UserAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\PatientResource;
 use App\Models\Patient;
+use App\Models\Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,8 +23,9 @@ class PatientController extends Controller
     public function index(): JsonResponse
     {
         //
-        $patients = Patient::query()
-            ->get();
+        $patients = PatientResource::collection(Patient::query()
+            ->get()
+        );
 
         return response()->json(compact('patients'));
     }
@@ -36,11 +39,13 @@ class PatientController extends Controller
     public function store(CreateUserRequest $request): JsonResponse
     {
         //
-        $user = UserAction::create($request);
+        $role_id = Role::whereName('Patient')->first()?->id ?? 4;
 
-        $patient = Patient::query()->create([
+        $user = UserAction::create($request, $role_id);
+
+        $patient = new PatientResource(Patient::query()->create([
             'user_id' => $user->id,
-        ]);
+        ]));
 
         return response()->json(compact('patient'));
     }
@@ -54,6 +59,8 @@ class PatientController extends Controller
     public function show(Patient $patient): JsonResponse
     {
         //
+        $patient = new PatientResource($patient);
+
         return response()->json(compact('patient'));
     }
 
@@ -67,7 +74,13 @@ class PatientController extends Controller
     public function update(UpdateUserRequest $request, Patient $patient): JsonResponse
     {
         //
-        $patient->user->update($request->all());
+        $patient = new PatientResource(
+            $patient->user->update([
+                'name' => $request->name,
+                'surname' => $request->surname,
+                'dob' => $request->dob,
+            ])
+        );
 
         return response()->json(compact('patient'));
     }
@@ -84,7 +97,7 @@ class PatientController extends Controller
         $patient->delete();
 
         return response()->json([
-            'message'=> 'deleted',
+            'message' => 'deleted',
         ]);
     }
 }

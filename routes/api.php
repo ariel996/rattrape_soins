@@ -19,6 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResources([
-    'personnel'=>\App\Http\Controllers\Api\PersonnelController::class,
-    'patient'=> \App\Http\Controllers\Api\PatientController::class,
+    'personnels'=>\App\Http\Controllers\Api\PersonnelController::class,
+    'patients'=> \App\Http\Controllers\Api\PatientController::class,
 ]);

@@ -6,7 +6,9 @@ use App\Http\Controllers\Actions\UserAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\PersonnelResource;
 use App\Models\Personnel;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,8 +23,9 @@ class PersonnelController extends Controller
     public function index()
     {
         //
-        $personnels = Personnel::query()
-            ->get();
+        $personnels = PersonnelResource::collection(Personnel::query()
+            ->get()
+        );
 
         return response()->json(compact('personnels'));
     }
@@ -36,11 +39,14 @@ class PersonnelController extends Controller
     public function store(CreateUserRequest $request): JsonResponse
     {
         //
-        $user = UserAction::create($request);
+        $role_id = Role::whereName('Staff')->first()?->id ?? 3;
+        $user = UserAction::create($request, $role_id);
 
-        $personnel = Personnel::query()->create([
-            'user_id' => $user->id,
-        ]);
+        $personnel = new PersonnelResource(
+            Personnel::query()->create([
+                'user_id' => $user->id,
+            ])
+        );
 
         return response()->json(compact('personnel'));
     }
@@ -54,6 +60,8 @@ class PersonnelController extends Controller
     public function show(Personnel $personnel): JsonResponse
     {
         //
+        $personnel = new PersonnelResource($personnel);
+
         return response()->json(compact('personnel'));
     }
 
@@ -67,7 +75,13 @@ class PersonnelController extends Controller
     public function update(UpdateUserRequest $request, Personnel $personnel): JsonResponse
     {
         //
-        $personnel->user->update($request->all());
+        $personnel = new PersonnelResource(
+            $personnel->user->update([
+                'name' => $request->name,
+                'surname' => $request->surname,
+                'dob' => $request->dob,
+            ])
+        );
 
         return response()->json(compact('personnel'));
     }
@@ -84,7 +98,7 @@ class PersonnelController extends Controller
         $personnel->delete();
 
         return response()->json([
-            'message'=>'Deleted',
+            'message' => 'Deleted',
         ]);
     }
 }

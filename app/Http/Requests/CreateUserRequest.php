@@ -27,9 +27,8 @@ class CreateUserRequest extends FormRequest
             'name'=>['required', 'string'],
             'surname'=>['sometime', 'string'],
             'dob'=>['required', 'date'],
-            'email'=>['required', 'unique:users,email'],
+            'email'=>['required', 'unique:users,email', 'email'],
             'password'=>['required', 'confirmed'],
-            'role_id'=>['required', 'integer'],
         ];
     }
 }

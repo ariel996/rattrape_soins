@@ -13,7 +13,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,10 +25,9 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             //
-            'name'=>['required', 'string'],
-            'surname'=>['sometime', 'string'],
-            'dob'=>['required', 'date'],
-            'role_id'=>['required', 'integer'],
+            'name' => ['required', 'string'],
+            'surname' => ['sometime', 'string'],
+            'dob' => ['required', 'date'],
         ];
     }
 }

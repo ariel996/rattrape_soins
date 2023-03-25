@@ -17,11 +17,11 @@ class Personnel extends Model
 
     /**
      * get information about the the user information
-     * @return HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): HasOne
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->HasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
