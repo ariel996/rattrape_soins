@@ -28,7 +28,7 @@ class Personnel extends Model
      * get personnel availability
      * @return HasMany
      */
-    public function availability(): HasMany
+    public function availabilities(): HasMany
     {
         return $this->hasMany(Availability::class);
     }
@@ -46,7 +46,7 @@ class Personnel extends Model
      * get all personnel appointment
      * @return HasMany
      */
-    public function appointment(): HasMany
+    public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class);
     }

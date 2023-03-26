@@ -7,11 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\PersonnelResource;
+use App\Models\Appointment;
 use App\Models\Personnel;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PersonnelController extends Controller
 {
@@ -28,6 +30,38 @@ class PersonnelController extends Controller
         );
 
         return response()->json(compact('personnels'));
+    }
+
+    public function note(Request $request)
+    {
+        $request->validate([
+            'appointment_id'=>['required', 'integer', 'exists:appointments,id'],
+            'note'=>['required', 'integer'],
+        ], [
+            'appointment_id.exists'=>'The appointment chose don\'t exist',
+        ]);
+
+        // update the appointment note
+        $appointment = Appointment::query()
+            ->whereId($request->appointment_id)
+            ->wherePatientId(Auth::user())
+            ->first()
+            ?->update([
+                'note'=> $request->note,
+            ]);
+        // update the average note of the personnel
+        $personnel = Personnel::whereId($appointment->personnel_id)
+            ->with('appointments', function($query) {
+                $query->whereNotNull('note');
+            })->first();
+        $appointments = $personnel->appointments;
+        $personnel->update([
+            'note'=>$appointments->sum('note') / $appointments->count()
+        ]);
+
+        return response()->json([
+            'personnel'=> new PersonnelResource($personnel)
+        ]);
     }
 
     /**
