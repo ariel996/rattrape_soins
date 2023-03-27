@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('availabilities', function (Blueprint $table) {
+        Schema::create('schedulers', function (Blueprint $table) {
             $table->id();
-            $table->string('day');
-            $table->time('debut');
-            $table->time('fin');
-            $table->time('duration');
-            $table->time('break_begin')->nullable();
-            $table->time('break_end')->nullable();
+            $table->time('start');
+            $table->time('end')->nullable();
 
-            $table->foreignIdFor(\App\Models\Personnel::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Availability::class)->constrained()->cascadeOnDelete();
 
             $table->timestamps();
         });
@@ -35,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('availabilities');
+        Schema::dropIfExists('schedulers');
     }
 };

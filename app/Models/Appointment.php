@@ -42,9 +42,9 @@ class Appointment extends Model
      * Get the availability of a appointment
      * @return BelongsTo
      */
-    public function availability(): BelongsTo
+    public function scheduler(): BelongsTo
     {
-        return $this->belongsTo(Availability::class);
+        return $this->belongsTo(Scheduler::class);
     }
 
 }
