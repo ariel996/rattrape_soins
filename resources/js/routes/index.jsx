@@ -64,6 +64,21 @@ function Routers() {
                         </Route>
                     </Route>
 
+                    {/* Secretary route*/}
+                    <Route path="secretary">
+                        <Route index element={<h1> Secretary Profile Page</h1>}/>
+                        <Route path="patients">
+                            <Route index element={<PatientIndexAdmin/>}/>
+                            <Route path="create" element={<CreatePatientAdmin/>}/>
+                            <Route path="update" element={<UpdatePatientAdmin/>}/>
+                        </Route>
+                        <Route path="personnels">
+                            <Route index element={<PersonnelIndexAdmin/>}/>
+                            <Route path="create" element={<CreatePersonnelAdmin/>}/>
+                            <Route path="update" element={<UpdatePersonnelAdmin/>}/>
+                        </Route>
+                    </Route>
+
                     {/* Staff patient Are Here */}
                     <Route path="patient" element={<AllowRoutes role={Role.patient} redirectPath='/dashboard'/>}>
                         <Route index element={<h1> Patient Profile</h1>}/>
