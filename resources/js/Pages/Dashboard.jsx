@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import StaffIndex from "@/Pages/Staff";
 import PatientIndex from "@/Pages/Patients";
 import AdminIndex from "@/Pages/Admin";
@@ -12,7 +12,9 @@ export default function Dashboard() {
 
     const user = useSelector(UserSelector)
 
-    console.log("Here is the user", user)
+    useEffect(() => {
+        document.title = 'Dashboard'
+    })
 
     switch (user.role) {
         case Role.staff:
@@ -26,6 +28,4 @@ export default function Dashboard() {
         default:
             return (<h1>No Path Match your role where found </h1>)
     }
-
-
 }

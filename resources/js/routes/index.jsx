@@ -9,6 +9,11 @@ import Dashboard from "@/Pages/Dashboard";
 import {useSelector} from "react-redux";
 import {UserSelector} from "@/store/selector";
 import Role from "@/store/action-types/Role";
+import Logout from "@/Pages/Auth/Logout";
+import PatientIndex from "@/Pages/Patients";
+import Planing from "@/Pages/Staff/Planing";
+import CreatePlanning from "@/Pages/Staff/planing/Create";
+import UpdatePatient from "@/Pages/Staff/Patient/Update";
 
 function Routers() {
 
@@ -26,10 +31,16 @@ function Routers() {
 
                 <Route path="dashboard" element={<ProtectedRoutes isAllowed={user !== null}/>}>
                     <Route index element={<Dashboard/>}/>
+                    <Route path="logout" element={<Logout/>}/>
 
                     {/* Staff Route Are Here */}
                     <Route path="staff" element={<AllowRoutes role={Role.staff} redirectPath='/dashboard'/>}>
                         <Route index element={<h1> Staff Profile</h1>}/>
+                        {/* Print the list of patient */}
+                        <Route path="patient" element={<PatientIndex/>}/>
+                        <Route path="patient/update" element={<UpdatePatient/>} />
+                        <Route path="planing" element={<Planing/>}/>
+                        <Route path='planning/create' element={<CreatePlanning/>}/>
                     </Route>
 
                     {/* Admin Route Are Here */}

@@ -24,7 +24,10 @@ export default function Landing() {
                                     <h1 className="text-white font-semibold text-5xl">
                                         Ratrapage de Soin
                                     </h1>
-                                    <p className="mt-4 text-lg text-gray-300">
+                                    <p className="mt-3 text-gray-300 text-lg">
+                                        Nous Aidons les malades à rattraper leurs soins
+                                    </p>
+                                    <p className="mt-4 text-xl text-gray-300">
                                         Develloper et Presenté par: Mr
                                     </p>
                                 </div>

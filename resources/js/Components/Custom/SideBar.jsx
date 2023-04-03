@@ -1,15 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
-
-import NotificationDropdown from "./NotificationDropdown";
 import UserDropdown from "./UserDropdown";
-import {useSelector} from "react-redux";
-import {UserSelector} from "@/store/selector";
-import Role from "@/store/action-types/Role";
-import StaffIndex from "@/Pages/Staff";
-import PatientIndex from "@/Pages/Patients";
-import AdminIndex from "@/Pages/Admin";
-import SecretaryIndex from "@/Pages/Secretary";
+
 
 export default function Sidebar({children}) {
     const [collapseShow, setCollapseShow] = React.useState("hidden");

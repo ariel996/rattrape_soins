@@ -1,10 +1,9 @@
-import React from 'react'
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 
-export default function AdminIndex() {
+export default function CreatePlanning(){
     return (
         <Authenticated>
-            <h1>Here is the Admin Home page</h1>
+            <h1>Here is the page to create a new planing </h1>
         </Authenticated>
     )
 }
