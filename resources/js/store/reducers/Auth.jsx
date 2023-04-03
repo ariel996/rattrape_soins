@@ -7,10 +7,11 @@ import {
 } from "../action-types";
 
 const user = JSON.parse(localStorage.getItem("user"));
+const access_token = JSON.parse(localStorage.getItem("access_token"));
 
 const initialState = user === null ?
-    {isLoggedIn: false, user: null} :
-    {isLoggedIn: true, user};
+    {isLoggedIn: false, user: null, access_token: null} :
+    {isLoggedIn: true, user, access_token};
 
 export default function (state = initialState, action) {
     const {type, payload} = action;
@@ -27,10 +28,12 @@ export default function (state = initialState, action) {
                 isLoggedIn: false,
             };
         case LOGIN_SUCCESS:
+            const {user, access_token} = payload.user;
             return {
                 ...state,
                 isLoggedIn: true,
-                user: payload.user,
+                user,
+                access_token
             };
         case LOGIN_FAIL:
             return {
@@ -43,6 +46,7 @@ export default function (state = initialState, action) {
                 ...state,
                 isLoggedIn: false,
                 user: null,
+                access_token: null,
             };
         default:
             return state;

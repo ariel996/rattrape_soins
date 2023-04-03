@@ -76,7 +76,8 @@ export const login = (email, password) => (dispatch) => {
 
 export const logout = () => (dispatch) => {
     AuthService.logout();
-
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user');
     dispatch({
         type: LOGOUT,
     });

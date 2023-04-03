@@ -1,14 +1,18 @@
-import React from 'react'
-import {NavLink} from 'react-router-dom';
+import React, {useEffect} from 'react'
 import Message from "@/Components/Message";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {MessageSelector} from "@/store/selector";
-import Navbar from "@/Components/Custom/Navbar";
-import Footer from "@/Components/Custom/Footer";
+import {clearMessage} from "@/store/actions/messages";
 
 export default function ({children}) {
     const {message, error} = useSelector(MessageSelector);
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        setTimeout(() => {
+            dispatch(clearMessage())
+        }, 20000)
+    })
     return (
         <>
             <main className="min-h-screen flex justify-center items-center flex-col relative">

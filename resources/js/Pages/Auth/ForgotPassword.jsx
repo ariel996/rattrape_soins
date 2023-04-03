@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -9,6 +9,10 @@ import {useDispatch} from "react-redux";
 import {Link} from "react-router-dom";
 
 export default function ForgotPassword() {
+    useEffect(() => {
+        document.title = `Forgot-password`;
+    });
+
     const {
         register,
         handleSubmit,

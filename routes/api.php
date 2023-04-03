@@ -45,8 +45,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         //personnel availabilities routes
         'availabilities'=>AvailabilityController::class,
     ]);
-
-
 });
 
 

@@ -49,7 +49,7 @@ const routes = [
 ];
 export const privateRoutes = [
     {
-        path: '/',
+        path: '/dashboard',
         exact: true,
         auth: true,
         component: Dashboard,

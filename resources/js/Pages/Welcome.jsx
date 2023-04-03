@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Navbar from "@/Components/Custom/Navbar";
 import Footer from "@/Components/Custom/Footer";
 
 export default function Landing() {
+    useEffect(() => {
+        document.title = `Home`;
+    });
     return (
         <>
             <Navbar transparent/>

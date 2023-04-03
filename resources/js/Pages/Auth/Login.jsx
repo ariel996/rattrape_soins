@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate   } from 'react-router-dom'
 import {useForm} from 'react-hook-form'
 import {useDispatch, useSelector} from "react-redux";
 import {login} from "@/store/actions/authActions";
@@ -17,9 +17,14 @@ export default function Login() {
         formState: {errors},
     } = useForm();
 
+    useEffect(() => {
+        document.title = `Login`;
+    });
+
     const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleLoginSubmit = (data) => {
         setLoading(true);
@@ -28,6 +33,7 @@ export default function Login() {
 
         dispatch(login(email, password))
             .then(() => {
+                navigate ('/dashboard')
                 console.log("log In")
             })
             .catch(() => {
