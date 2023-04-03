@@ -14,6 +14,12 @@ import PatientIndex from "@/Pages/Patients";
 import Planing from "@/Pages/Staff/Planing";
 import CreatePlanning from "@/Pages/Staff/planing/Create";
 import UpdatePatient from "@/Pages/Staff/Patient/Update";
+import PatientIndexAdmin from "@/Pages/Admin/Patients";
+import CreatePatientAdmin from "@/Pages/Admin/Patients/Create";
+import UpdatePatientAdmin from "@/Pages/Admin/Patients/Update";
+import PersonnelIndexAdmin from "@/Pages/Admin/Personnels";
+import CreatePersonnelAdmin from "@/Pages/Admin/Personnels/Create";
+import UpdatePersonnelAdmin from "@/Pages/Admin/Personnels/Update";
 
 function Routers() {
 
@@ -38,7 +44,7 @@ function Routers() {
                         <Route index element={<h1> Staff Profile</h1>}/>
                         {/* Print the list of patient */}
                         <Route path="patient" element={<PatientIndex/>}/>
-                        <Route path="patient/update" element={<UpdatePatient/>} />
+                        <Route path="patient/update" element={<UpdatePatient/>}/>
                         <Route path="planing" element={<Planing/>}/>
                         <Route path='planning/create' element={<CreatePlanning/>}/>
                     </Route>
@@ -46,6 +52,16 @@ function Routers() {
                     {/* Admin Route Are Here */}
                     <Route path="admin" element={<AllowRoutes role={Role.admin} redirectPath='/dashboard'/>}>
                         <Route index element={<h1> Admin Profile</h1>}/>
+                        <Route path="patients">
+                            <Route index element={<PatientIndexAdmin/>}/>
+                            <Route path="create" element={<CreatePatientAdmin/>}/>
+                            <Route path="update" element={<UpdatePatientAdmin/>}/>
+                        </Route>
+                        <Route path="personnels">
+                            <Route index element={<PersonnelIndexAdmin/>}/>
+                            <Route path="create" element={<CreatePersonnelAdmin/>}/>
+                            <Route path="update" element={<UpdatePersonnelAdmin/>}/>
+                        </Route>
                     </Route>
 
                     {/* Staff patient Are Here */}
