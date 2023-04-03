@@ -18,8 +18,10 @@ class AppointmentController extends Controller
     public function index(): JsonResponse
     {
         return response()->json([
-            'appointments' => Appointment::collection(
-                Appointment::wherePersonnelId(Auth::user()->id),
+            'appointments' => AppointmentResource::collection(
+                Appointment::wherePersonnelId(Auth::user()->id)
+                    ->with(['personnel','patient',''])
+                    ->get(),
             )
         ]);
     }

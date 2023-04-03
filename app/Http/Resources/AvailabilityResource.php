@@ -20,7 +20,10 @@ class AvailabilityResource extends JsonResource
             'debut'=>$this->debut,
             'fin'=>$this->fin,
             'duration'=>$this->duration,
-            'personnel'=> new PersonnelResource($this->whenLoaded('personnel'))
+            'personnel'=> new PersonnelResource(
+                $this->whenLoaded('personnel')),
+            'schedulers'=> SchedulerResource::collection(
+                $this->whenLoaded('schedulers')),
         ];
     }
 }

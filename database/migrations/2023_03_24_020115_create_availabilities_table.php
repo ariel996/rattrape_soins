@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('day');
             $table->time('debut');
             $table->time('fin');
-            $table->integer('duration');
+            $table->time('duration');
+            $table->time('break_begin')->nullable();
+            $table->time('break_end')->nullable();
 
             $table->foreignIdFor(\App\Models\Personnel::class)->constrained()->cascadeOnDelete();
 

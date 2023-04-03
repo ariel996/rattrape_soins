@@ -34,7 +34,7 @@ class AuthController extends Controller
             $user = Auth::user();
 
             return response()->json([
-                'data' => new UserResource($user),
+                'user' => new UserResource($user),
                 'access_token' => $user->createToken('react-api')->plainTextToken,
             ]);
 

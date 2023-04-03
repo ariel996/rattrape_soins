@@ -18,7 +18,8 @@ return new class extends Migration {
 
             $table->foreignIdFor(\App\Models\Personnel::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Patient::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\Availability::class)->constrained()->cascadeOnDelete();
+
+            $table->foreignIdFor(\App\Models\Scheduler::class)->constrained()->cascadeOnDelete();
 
             $table->timestamps();
         });

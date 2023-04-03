@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\AvailabilityController;
 use App\Http\Controllers\Api\PersonnelController;
 use App\Http\Controllers\Api\SubscriptionController;
 use Illuminate\Http\Request;
@@ -39,11 +40,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         'personnels' => PersonnelController::class,
         'patients' => \App\Http\Controllers\Api\PatientController::class,
         'abonements' => SubscriptionController::class,
-        //personnel appointment route
+        //personnel appointment routes
         'appointments'=>AppointmentController::class,
+        //personnel availabilities routes
+        'availabilities'=>AvailabilityController::class,
     ]);
-
-
 });
 
 
