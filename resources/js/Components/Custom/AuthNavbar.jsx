@@ -8,7 +8,7 @@ export default function Navbar({user}) {
         <>
             {/* Navbar */}
             <nav
-                className=" top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-nowrap md:justify-start flex items-center p-4">
+                className=" top-0 left-0 w-full z-10 bg-transparent p-4">
                 <div
                     className="w-full mx-autp items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4">
                     {/* Brand */}
@@ -17,8 +17,16 @@ export default function Navbar({user}) {
                         className="text-xl uppercase hidden lg:inline-block font-semibold">
                         Dashboard {user.role}
                     </Link>
+
+                    <div className="hidden flex-row md:flex md:justify-between py-2 lg:ml-auto mr-5 md:items-center">
+                        <div>
+                            <p>Date Aujourd'hui</p>
+                            <p>{new Date().toLocaleDateString("fr-FR")}</p>
+                        </div>
+                        <i className="fa fa-calendar-alt m-2 text-3xl"/>
+                    </div>
                     {/* Form */}
-                    <form className="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3">
+                    <form className="md:flex hidden flex-row flex-wrap items-center  mr-3">
                         <div className="relative flex w-full flex-wrap items-stretch">
                               <span
                                   className="z-10 h-full leading-snug font-normal text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3">

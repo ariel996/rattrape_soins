@@ -23,6 +23,22 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
+    // Admin
+    Route::middleware(['auth:sanctum', 'abilities:admin,*'])->group(function () {
+
+    });
+
+    // only for staff member
+    Route::middleware(['auth:sanctum', 'abilities:patient'])->group(function () {
+
+    });
+
+    // only for patient member
+    Route::middleware(['auth:sanctum', 'abilities:patient'])->group(function () {
+
+    });
+
+
     Route::get('user', [AuthController::class, 'user']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('logout-all', [AuthController::class, 'logout-all']);

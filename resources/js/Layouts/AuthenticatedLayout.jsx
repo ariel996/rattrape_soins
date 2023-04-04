@@ -4,6 +4,7 @@ import AuthFooter from "@/Components/Custom/AuthFooter";
 import {useSelector} from "react-redux";
 import {UserSelector} from "@/store/selector";
 import SideBarMenu from "@/Components/Custom/SideBarMenu";
+import React from "react";
 
 export default function Authenticated({children}) {
 
@@ -12,10 +13,13 @@ export default function Authenticated({children}) {
         <>
             <SideBarMenu />
             <div className="relative md:ml-64">
-                <Navbar user={user}/>
                 {/* Header */}
+                <Navbar user={user}/>
+                <hr className="md:min-w-full"/>
 
-                {children ? children : <Outlet/>}
+                <div className="p-5 w-full">
+                    {children ? children : <Outlet/>}
+                </div>
 
                 <footer className="block py-4">
                     <AuthFooter/>

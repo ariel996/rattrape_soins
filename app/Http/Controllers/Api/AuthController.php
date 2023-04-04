@@ -33,9 +33,17 @@ class AuthController extends Controller
             $request->authenticate();
             $user = Auth::user();
 
+            $abilities = match ($user->role_id) {
+                1 => ['*', 'admin'],
+                2 => ['secretary'],
+                3 => ['staff'],
+                4 => ['patient'],
+                default => ['No match']
+            };
+
             return response()->json([
                 'user' => new UserResource($user),
-                'access_token' => $user->createToken('react-api')->plainTextToken,
+                'access_token' => $user->createToken('react-api', $abilities)->plainTextToken,
             ]);
 
         } catch (\Exception $e) {
