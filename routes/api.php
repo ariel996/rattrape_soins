@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AvailabilityController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\PersonnelController;
 use App\Http\Controllers\Api\SubscriptionController;
 use Illuminate\Http\Request;
@@ -24,18 +25,23 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware(['auth:sanctum'])->group(function () {
 
     // Admin
-    Route::middleware(['auth:sanctum', 'abilities:admin,*'])->group(function () {
-        Route::get('dashboard', );
+    Route::middleware(['auth:sanctum', 'abilities:admin,*'])->prefix('admin')->group(function () {
+        Route::get('dashboard', [DashboardController::class, 'AdminDashboard']);
+    });
+
+    // Admin
+    Route::middleware(['auth:sanctum', 'abilities:secretary'])->prefix('secretary')->group(function () {
+        Route::get('dashboard', [DashboardController::class, 'SecretaryDashboard']);
     });
 
     // only for staff member
-    Route::middleware(['auth:sanctum', 'abilities:patient'])->group(function () {
-
+    Route::middleware(['auth:sanctum', 'abilities:staff'])->prefix('staff')->group(function () {
+        Route::get('dashboard', [DashboardController::class, 'StaffDashboard']);
     });
 
     // only for patient member
-    Route::middleware(['auth:sanctum', 'abilities:patient'])->group(function () {
-
+    Route::middleware(['auth:sanctum', 'abilities:patient'])->prefix('patient')->group(function () {
+        Route::get('dashboard', [DashboardController::class, 'PatientDashboard']);
     });
 
 
