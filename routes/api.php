@@ -25,7 +25,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Admin
     Route::middleware(['auth:sanctum', 'abilities:admin,*'])->group(function () {
-
+        Route::get('dashboard', );
     });
 
     // only for staff member
