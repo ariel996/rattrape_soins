@@ -3,7 +3,7 @@ import {
     REGISTER_FAIL,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    LOGOUT,
+    LOGOUT, LOGOUT_FAIL,
 } from "../action-types";
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -47,6 +47,10 @@ export default function (state = initialState, action) {
                 isLoggedIn: false,
                 user: null,
                 access_token: null,
+            };
+        case LOGOUT_FAIL:
+            return {
+                state,
             };
         default:
             return state;

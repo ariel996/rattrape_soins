@@ -1,4 +1,4 @@
-import Http from '../../Http';
+import Http, {setHeader} from '../../Http';
 
 const register = (username, email, password) => {
     return Http.post("signup", {
@@ -10,7 +10,7 @@ const register = (username, email, password) => {
 
 const login = (email, password) => {
     return Http
-        .post("api/login", {
+        .post("/api/login", {
             email,
             password,
         })
@@ -19,19 +19,20 @@ const login = (email, password) => {
                 localStorage.setItem("user", JSON.stringify(response.data.user));
                 localStorage.setItem("access_token", JSON.stringify(response.data.access_token));
             }
-            console.log('From the service', response)
             return response.data;
         });
 };
 
-const logout = () => {
-    Http.post('api/logout').then((response) => {
-        return response.data;
-    })
+const logoutService = () => {
+    setHeader();
+    return Http.post('/api/logout')
+        .then((response) => {
+            return response.data;
+        })
 };
 
 export default {
     register,
     login,
-    logout,
+    logoutService
 };

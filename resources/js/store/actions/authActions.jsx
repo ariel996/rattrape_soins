@@ -5,6 +5,7 @@ import {
     LOGIN_FAIL,
     LOGOUT,
     SET_MESSAGE,
+    LOGOUT_FAIL,
 } from "../action-types";
 
 import AuthService from "../services/authService";
@@ -66,7 +67,7 @@ export const login = (email, password) => (dispatch) => {
 
             dispatch({
                 type: SET_MESSAGE,
-                payload: {message, error: true },
+                payload: {message, error: true},
             });
 
             return Promise.reject();
@@ -75,10 +76,38 @@ export const login = (email, password) => (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-    AuthService.logout();
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user');
-    dispatch({
-        type: LOGOUT,
-    });
+    return AuthService.logoutService().then(
+        (response) => {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('user');
+            dispatch({
+                type: LOGOUT,
+            });
+            dispatch({
+                type: SET_MESSAGE,
+                payload: response.data.message,
+            });
+            return Promise.resolve()
+        },
+        (error) => {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+
+            dispatch({
+                type: LOGOUT_FAIL,
+            });
+
+            dispatch({
+                type: SET_MESSAGE,
+                payload: message,
+            });
+
+            return Promise.reject();
+        }
+    )
+
 };
