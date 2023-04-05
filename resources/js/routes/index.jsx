@@ -35,7 +35,7 @@ function Routers() {
                     <Route path="forget-password" element={<ForgetPassword/>}/>
                 </Route>
 
-                <Route path="dashboard" element={<ProtectedRoutes isAllowed={user !== null}/>}>
+                <Route path="dashboard"  element={<ProtectedRoutes isAllowed={user !== null}/>}>
                     <Route index element={<Dashboard/>}/>
                     <Route path="logout" element={<Logout/>}/>
 
