@@ -29,10 +29,26 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('dashboard', [DashboardController::class, 'AdminDashboard']);
     });
 
-    // Admin
+    // Secretary
     Route::middleware(['auth:sanctum', 'abilities:secretary'])->prefix('secretary')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'SecretaryDashboard']);
     });
+
+    //Only Admin and Secretary
+    Route::middleware(['auth:sanctum', 'ability:secretary,admin'])->group(function(){
+        Route::apiResources([
+            'personnels' => PersonnelController::class,
+            'patients' => \App\Http\Controllers\Api\PatientController::class,
+            'abonements' => SubscriptionController::class,
+        ]);
+    });
+
+    Route::apiResources([
+        //personnel appointment routes
+        'appointments'=>AppointmentController::class,
+        //personnel availabilities routes
+        'availabilities'=>AvailabilityController::class,
+    ]);
 
     // only for staff member
     Route::middleware(['auth:sanctum', 'abilities:staff'])->prefix('staff')->group(function () {
@@ -58,15 +74,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     //Patient appointment
     Route::post('appointment/register', [AppointmentController::class, 'register']);
 
-    Route::apiResources([
-        'personnels' => PersonnelController::class,
-        'patients' => \App\Http\Controllers\Api\PatientController::class,
-        'abonements' => SubscriptionController::class,
-        //personnel appointment routes
-        'appointments'=>AppointmentController::class,
-        //personnel availabilities routes
-        'availabilities'=>AvailabilityController::class,
-    ]);
+
 });
 
 

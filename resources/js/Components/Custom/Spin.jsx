@@ -1,4 +1,4 @@
-export default function Spin({style = null}) {
+export default function Spin({style = 'bg-indigo-500'}) {
     return (
         <svg className={"animate-spin -ml-1 mx-3 h-5 w-5 text-white " + style} xmlns="http://www.w3.org/2000/svg"
              fill="none" viewBox="0 0 24 24">

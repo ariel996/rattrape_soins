@@ -5,7 +5,7 @@ import * as actions from './store/actions';
 export function setHeader() {
     const state = store.getState();
     const token = state.Auth.access_token;
-    console.log('Here is the token', token)
+
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 

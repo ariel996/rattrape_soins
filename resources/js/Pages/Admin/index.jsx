@@ -20,7 +20,6 @@ export default function AdminIndex() {
                 return setError(error.toString())
             })
     }, [])
-    console.log(data)
 
     return (
         <Authenticated>
