@@ -6,8 +6,11 @@ use App\Http\Controllers\Actions\UserAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\AppointmentResource;
 use App\Http\Resources\PatientResource;
+use App\Models\Appointment;
 use App\Models\Patient;
+use App\Models\Personnel;
 use App\Models\Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,6 +31,27 @@ class PatientController extends Controller
         );
 
         return response()->json(compact('patients'));
+    }
+
+    /**
+     * Get all doctor patient
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function DoctorPatient(Request $request): JsonResponse
+    {
+        $id = $request->user()->id;
+        $user = Personnel::whereUserId($id)->first();
+
+        $appointment = Appointment::query()
+            ->wherePersonnelId($user->id)
+            ->distinct('patient_id')
+            ->with('patient')
+            ->get();
+
+        $appointments = AppointmentResource::collection($appointment);
+
+        return response()->json(compact('appointments'));
     }
 
     /**

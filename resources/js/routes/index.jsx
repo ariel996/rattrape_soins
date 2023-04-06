@@ -10,7 +10,6 @@ import {useSelector} from "react-redux";
 import {UserSelector} from "@/store/selector";
 import Role from "@/store/action-types/Role";
 import Logout from "@/Pages/Auth/Logout";
-import PatientIndex from "@/Pages/Patients";
 import Planing from "@/Pages/Staff/Planing";
 import CreatePlanning from "@/Pages/Staff/planing/Create";
 import UpdatePatient from "@/Pages/Staff/Patient/Update";
@@ -20,6 +19,7 @@ import UpdatePatientAdmin from "@/Pages/Admin/Patients/Update";
 import PersonnelIndexAdmin from "@/Pages/Admin/Personnels";
 import CreatePersonnelAdmin from "@/Pages/Admin/Personnels/Create";
 import UpdatePersonnelAdmin from "@/Pages/Admin/Personnels/Update";
+import PatientIndex from "@/Pages/Staff/Patient";
 
 function Routers() {
 

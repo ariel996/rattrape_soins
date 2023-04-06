@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AvailabilityController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\PersonnelController;
 use App\Http\Controllers\Api\SubscriptionController;
 use Illuminate\Http\Request;
@@ -38,7 +39,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(['auth:sanctum', 'ability:secretary,admin'])->group(function(){
         Route::apiResources([
             'personnels' => PersonnelController::class,
-            'patients' => \App\Http\Controllers\Api\PatientController::class,
+            'patients' => PatientController::class,
             'abonements' => SubscriptionController::class,
         ]);
     });
@@ -53,6 +54,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // only for staff member
     Route::middleware(['auth:sanctum', 'abilities:staff'])->prefix('staff')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'StaffDashboard']);
+        Route::get('patient', [PatientController::class, 'DoctorPatient']);
     });
 
     // only for patient member

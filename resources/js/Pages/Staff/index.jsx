@@ -20,15 +20,17 @@ export default function StaffIndex() {
                 return setError(error.toString())
             })
     }, [])
-    console.log(data)
 
     return (
         <Authenticated>
             <div className="flex flex-wrap gap-6">
                 {data ? (
                     <>
-                        <StatCard loading={loading} title="Rendez Vous" value={data.nbrAppointment} icon='fa fa-calendar-alt'/>
-                        <StatCard loading={loading} title="Rendez Vous Ajourd'hui" value={data.nbrAppointmentToday} icon='fa fa-users'/>
+                        <StatCard loading={loading} title="Patients" value={data.nbrPatient} icon='fa fa-users'/>
+                        <StatCard loading={loading} title="Rendez Vous" value={data.nbrAppointment}
+                                  icon='fa fa-calendar-alt'/>
+                        <StatCard loading={loading} title="Rendez Vous Ajourd'hui" value={data.nbrAppointmentToday}
+                                  icon='fa fa-user'/>
                     </>
                 ) : (
                     <h1>{error}</h1>
