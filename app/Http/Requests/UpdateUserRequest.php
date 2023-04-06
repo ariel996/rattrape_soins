@@ -26,7 +26,7 @@ class UpdateUserRequest extends FormRequest
         return [
             //
             'name' => ['required', 'string'],
-            'surname' => ['sometime', 'string'],
+            'surname' => ['sometimes', 'string'],
             'dob' => ['required', 'date'],
         ];
     }

@@ -1,9 +1,9 @@
+import React, {useEffect, useState} from "react";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
-import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import AdminServices from "@/store/services/AdminServices";
 import Message from "@/Components/Message";
@@ -22,50 +22,83 @@ export default function CreatePersonnelAdmin() {
     } = useForm();
 
     const {id} = useParams()
-
     let [user, setUser] = useState({
         name: '',
         surname: '',
         email: '',
         dob: ''
     })
-
     useEffect(() => {
         if (id) {
             // getting the updating user information
             setLoadingData(true)
-            AdminServices.getPersonnel(id)
+            const getUser = async ()=> {
+                const response = await AdminServices.getPersonnel(id);
+                const apiUser = response.data.personnel.account
+                setUser({
+                    name: apiUser.name,
+                    surname: apiUser.surname,
+                    email: apiUser.email,
+                    dob: apiUser.dob
+                });
+            };
+            getUser();
+            setLoadingData(false)
+
+            /*AdminServices.getPersonnel(id)
                 .then((response) => {
-                    const d = response.data.personnel.account
-                    setUser(d)
-                    console.log(Object.is(d, user))
+                    const apiUser = response.data.personnel.account
+                    setUser({
+                        name: apiUser.name,
+                        surname: apiUser.surname,
+                        email: apiUser.email,
+                    });
                 })
                 .catch(() => {
                     setError(AdminServices.getErrorMessage(error))
                 })
                 .finally(() => {
                     setLoadingData(false)
-                })
+                })*/
         }
     }, [])
-
     console.log("User ", user)
 
 
     const navigate = useNavigate();
 
+    const handleChanged = e =>{
+        alert('chanfge')
+        const {name, value} = e.target
+        setUser({...user, [name]: value})
+    }
+
     const onFormSubmit = (data) => {
         setLoading(true)
-        AdminServices.createPersonnel(data)
-            .then((response) => {
-                navigate('/dashboard/admin/personnels')
-            })
-            .catch((error) => {
-                setError(AdminServices.getErrorMessage(error))
-            })
-            .finally(() => {
-                setLoading(false)
-            })
+        if(id){
+            const newdata = {...user, ...data}
+            AdminServices.updatePersonnel(id, newdata)
+                .then((response) => {
+                    navigate('/dashboard/admin/personnels')
+                })
+                .catch((error) => {
+                    setError(AdminServices.getErrorMessage(error))
+                })
+                .finally(() => {
+                    setLoading(false)
+                })
+        }else {
+            AdminServices.createPersonnel(data)
+                .then((response) => {
+                    navigate('/dashboard/admin/personnels')
+                })
+                .catch((error) => {
+                    setError(AdminServices.getErrorMessage(error))
+                })
+                .finally(() => {
+                    setLoading(false)
+                })
+        }
     };
 
     return (
@@ -97,8 +130,9 @@ export default function CreatePersonnelAdmin() {
                                     id="name"
                                     className="mt-1 block w-full"
                                     autoComplete="name"
-                                    value={user.name}
+                                    defaultValue={user.name}
                                     validationFailed={errors.name}
+                                    onChange={handleChanged}
                                     {...(register("name", {required: true}))}
                                 />
                                 {errors.name && (
@@ -112,7 +146,7 @@ export default function CreatePersonnelAdmin() {
                                     id="surname"
                                     className="mt-1 block w-full"
                                     autoComplete="surname"
-                                    value={user.surname}
+                                    defaultValue={user.surname}
                                     validationFailed={errors.name}
                                     {...(register("surname", {required: true}))}
                                 />
@@ -128,7 +162,7 @@ export default function CreatePersonnelAdmin() {
                                     type="email"
                                     className="mt-1 block w-full"
                                     autoComplete="username"
-                                    value={user.email}
+                                    defaultValue={user.email}
                                     validationFailed={errors.email}
                                     {...(register("email", {required: true}))}
                                 />
@@ -136,7 +170,6 @@ export default function CreatePersonnelAdmin() {
                                     <InputError message="l'email est obligatoire" className="mt-2"/>
                                 )}
                             </div>
-
                             <div className="mt-4">
                                 <InputLabel htmlFor="email" value="Date de naissance"/>
 
@@ -145,7 +178,7 @@ export default function CreatePersonnelAdmin() {
                                     type="date"
                                     className="mt-1 block w-full"
                                     autoComplete="date"
-                                    value={user.dob}
+                                    defaultValue={user.dob}
                                     validationFailed={errors.dob}
                                     {...(register("dob", {required: true}))}
                                 />
@@ -155,8 +188,10 @@ export default function CreatePersonnelAdmin() {
                             </div>
 
 
+
                             {!id && (
                                 <>
+
                                     <div className="mt-4">
                                         <InputLabel htmlFor="password" value="Password"/>
 

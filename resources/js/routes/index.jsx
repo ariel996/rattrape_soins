@@ -55,7 +55,7 @@ function Routers() {
                         <Route path="patients">
                             <Route index element={<PatientIndexAdmin/>}/>
                             <Route path="create" element={<CreatePatientAdmin/>}/>
-                            <Route path="update" element={<UpdatePatientAdmin/>}/>
+                            <Route path="update/:id" element={<CreatePatientAdmin/>}/>
                         </Route>
                         <Route path="personnels">
                             <Route index element={<PersonnelIndexAdmin/>}/>

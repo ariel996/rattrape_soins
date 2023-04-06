@@ -74,13 +74,12 @@ class PatientController extends Controller
     public function update(UpdateUserRequest $request, Patient $patient): JsonResponse
     {
         //
-        $patient = new PatientResource(
-            $patient->user->update([
-                'name' => $request->name,
-                'surname' => $request->surname,
-                'dob' => $request->dob,
-            ])
-        );
+        $patient->user->update([
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'dob' => $request->dob,
+        ]);
+        $patient = new PatientResource($patient);
 
         return response()->json(compact('patient'));
     }

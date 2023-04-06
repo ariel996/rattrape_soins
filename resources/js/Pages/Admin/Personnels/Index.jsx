@@ -33,6 +33,7 @@ export default function PersonnelIndexAdmin() {
         {name: "Name"},
         {name: "email"},
         {name: 'Note'},
+        {name: 'Date de naissance'},
         {name: 'Actions'}
     ]
 
@@ -62,7 +63,7 @@ export default function PersonnelIndexAdmin() {
             ) : (
                 <Table rows={TableRows}>
                     {data.map((value, index) => {
-                            const {name, surname, email} = value.account
+                            const {name, surname, email, dob} = value.account
                             return (
                                 <tr key={index}>
                                     {/*<td className="py-3 pl-4">
@@ -90,6 +91,9 @@ export default function PersonnelIndexAdmin() {
                                     </td>
                                     <td className="px-6 py-4 text-gray-800 text-sm whitespace-nowrap">
                                         {value.note}
+                                    </td>
+                                    <td className="px-6 py-4 text-gray-800 text-sm whitespace-nowrap">
+                                        {dob}
                                     </td>
                                     <td className="flex justify-between">
                                         <div className="px-6 py-4 text-sm text-right whitespace-nowrap">

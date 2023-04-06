@@ -109,13 +109,12 @@ class PersonnelController extends Controller
     public function update(UpdateUserRequest $request, Personnel $personnel): JsonResponse
     {
         //
-        $personnel = new PersonnelResource(
-            $personnel->user->update([
-                'name' => $request->name,
-                'surname' => $request->surname,
-                'dob' => $request->dob,
-            ])
-        );
+        $personnel->user->update([
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'dob' => $request->dob,
+        ]);
+        $personnel = new PersonnelResource($personnel);
 
         return response()->json(compact('personnel'));
     }
