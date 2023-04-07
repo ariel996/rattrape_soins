@@ -13,6 +13,33 @@ class Availability extends Model
 
     protected $guarded = [];
 
+    public array $days = [
+        'monday' => 'Lundi',
+        'tuesday' => 'Mardi',
+        'wednesday' => 'Mercredi',
+        'thursday' => 'Jeudi',
+        'friday' => 'Vendredi',
+        'saturday' => 'Samedi',
+        'sunday' => 'Dimanche',
+    ];
+
+    public function initPersonnelAvailability($personnelId)
+    {
+        $availability = [];
+        foreach ($this->days as $day) {
+            $availability [] = [
+                'day' => $day,
+                'debut' => 0,
+                'fin' => 0,
+                'duration' => 0,
+                'personnel_id' => $personnelId,
+                'break_begin' => 0,
+                'break_end' => 0,
+            ];
+        }
+        $this->newQuery()->upsert($availability, ['day']);
+    }
+
     /**
      * Get the personnel information
      * @return BelongsTo

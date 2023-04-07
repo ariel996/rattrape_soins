@@ -52,7 +52,7 @@ function Routers() {
                         <Route path="appointment-up-coming" element={<StaffUpComingAppointmentIndex/>}/>
                         <Route path="patient/update" element={<UpdatePatient/>}/>
                         <Route path="planing" element={<Planing/>}/>
-                        <Route path='planning/create' element={<CreatePlanning/>}/>
+                        <Route path='planning/update/:day' element={<CreatePlanning/>}/>
                     </Route>
 
                     {/* Admin Route Are Here */}

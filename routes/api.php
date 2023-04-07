@@ -47,8 +47,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResources([
         //personnel appointment routes
         'appointments' => AppointmentController::class,
-        //personnel availabilities routes
-        'availabilities' => AvailabilityController::class,
     ]);
     Route::get("appointment/{status}", [AppointmentController::class, 'indexStatus']);
 
@@ -56,6 +54,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(['auth:sanctum', 'abilities:staff'])->prefix('staff')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'StaffDashboard']);
         Route::get('patient', [PatientController::class, 'DoctorPatient']);
+        Route::apiResource('availabilities', AvailabilityController::class);
     });
 
     // only for patient member

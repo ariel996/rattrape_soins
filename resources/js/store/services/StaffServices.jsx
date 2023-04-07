@@ -10,12 +10,31 @@ const getMyAppointments = () => {
 }
 const getMyAppointment = (status) => {
     setHeader()
-    return Http.get('/api/appointment/'+status)
+    return Http.get('/api/appointment/' + status)
 }
+
+const getMyPlannings = () => {
+    setHeader()
+    return Http.get('/api/staff/availabilities');
+}
+
+const getMyPlanning = (id) => {
+    setHeader()
+    return Http.get('/api/staff/availabilities/' + id);
+}
+
+const UpdatePlanning = (id, data)=>{
+    setHeader()
+    return Http.put('/api/staff/availabilities/' + id, data)
+}
+
 
 export default {
     getMyPatients,
     getMyAppointments,
     getMyAppointment,
+    getMyPlannings,
+    getMyPlanning,
+    UpdatePlanning,
 
 }

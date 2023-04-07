@@ -12,20 +12,23 @@ use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AvailabilityController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $user = $request->user();
+        $p = $user->personnel()->with('availabilities')->first();
+
         return response()->json([
-            'availabilities' => AvailabilityResource::collection(
-                Availability::wherePersonnelId(Auth::user())->get()
-            )
+            'availabilities' => AvailabilityResource::collection($p->availabilities)
         ]);
     }
 
@@ -103,30 +106,49 @@ class AvailabilityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Availability $availability
-     * @return \Illuminate\Http\Response
+     * @param Availability $availability
+     * @return JsonResponse
      */
     public function show(Availability $availability)
     {
         //
+        return response()->json([
+            'availability' => new AvailabilityResource($availability)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param \App\Models\Availability $availability
-     * @return \Illuminate\Http\Response
+     * @param Availability $availability
+     * @return JsonResponse
      */
-    public function update(Request $request, Availability $availability)
+    public function update(Request $request, Availability $availability): JsonResponse
     {
-        //
+
+        $validated = $request->validate([
+            'day' => ['required', Rule::in(array_values((new Availability())->days))],
+            'debut' => ['required'],
+            'fin' => ['required'],
+        ]);
+        $request->validate([
+            'duree' => ['required']
+        ]);
+
+        $availability->update(array_merge($validated, [
+            'duration' => $request->duree,
+        ]));
+
+        return response()->json([
+            'message' => 'Updated',
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Availability $availability
+     * @param Availability $availability
      * @return \Illuminate\Http\Response
      */
     public function destroy(Availability $availability)
