@@ -11,6 +11,13 @@ class Appointment extends Model
 {
     use HasFactory;
 
+    public const STATUS = [
+        'up_coming' => 'Up Coming',
+        'validated' => 'Validated',
+        'pass' => 'Pass',
+        'cancel' => 'Cancel'
+    ];
+
     /**
      * Get All observation of the appointment
      * @return HasMany

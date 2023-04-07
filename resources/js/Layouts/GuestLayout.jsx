@@ -12,7 +12,7 @@ export default function ({children}) {
         setTimeout(() => {
             dispatch(clearMessage())
         }, 20000)
-    })
+    },[message])
     return (
         <>
             <main className="min-h-screen flex justify-center items-center flex-col relative">

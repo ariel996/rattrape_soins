@@ -10,6 +10,10 @@ import Role from "@/store/action-types/Role";
 
 export default function Dashboard() {
 
+    /*const {data} = useLoaderData();
+    console.log(data)
+    alert('What did you have in the console')*/
+
     const user = useSelector(UserSelector)
 
     useEffect(() => {

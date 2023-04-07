@@ -78,6 +78,23 @@ const Register = () => {
                     </div>
 
                     <div className="mt-4">
+                        <InputLabel htmlFor="email" value="Date de naissance"/>
+
+                        <TextInput
+                            id="dob"
+                            type="date"
+                            className="mt-1 block w-full"
+                            autoComplete="date"
+                            validationFailed={errors.dob}
+                            {...(register("dob", {required: true}))}
+                        />
+                        {errors.dob && (
+                            <InputError message="La date de naissance est obligatiore" className="mt-2"/>
+                        )}
+                    </div>
+
+
+                    <div className="mt-4">
                         <InputLabel htmlFor="password" value="Password"/>
 
                         <TextInput
@@ -115,7 +132,7 @@ const Register = () => {
 
                     <div className="flex items-center justify-between mt-4">
                         <Link
-                            to='/register'
+                            to='/login'
                             className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             Already registered?

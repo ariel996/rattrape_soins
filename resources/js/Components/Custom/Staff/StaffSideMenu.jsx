@@ -7,12 +7,13 @@ export default function StaffSideMenu() {
             {/* Navigation */}
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                 <li className="items-center">
-                    <Link
-                        className="text-pink-500 hover:text-pink-600 text-xs uppercase py-3 font-bold block"
+                    <NavLink
+                        end
+                        className="text-xs uppercase py-3 font-bold block"
                         to="/dashboard"
                     >
                         <i className="fas fa-tv opacity-75 mr-2 text-sm"/> Dashboard
-                    </Link>
+                    </NavLink>
                 </li>
             </ul>
             {/* Divider */}
@@ -23,6 +24,7 @@ export default function StaffSideMenu() {
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                 <li className="items-center">
                     <NavLink
+                        end
                         className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
                         to="/dashboard/staff/patient"
                     >
@@ -37,21 +39,23 @@ export default function StaffSideMenu() {
             </h6>
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                 <li className="items-center">
-                    <Link
+                    <NavLink
+                        end
                         className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
                         to="/dashboard/staff/planing"
                     >
                         <i className="fa fa-arrow-up mr-2 text-sm"/> A venir
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li className="items-center">
-                    <Link
+                    <NavLink
+                        end
                         className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
                         to="/dashboard/staff/planing/create"
                     >
                         <i className="fa fa-arrow-down mr-2 text-sm"/> Passer
-                    </Link>
+                    </NavLink>
                 </li>
             </ul>
 
@@ -61,21 +65,23 @@ export default function StaffSideMenu() {
             </h6>
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                 <li className="items-center">
-                    <Link
+                    <NavLink
+                        end
                         className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
                         to="/dashboard/staff/planing"
                     >
                         <i className="fa fa-calendar mr-2 text-sm"/> Mon Planing
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li className="items-center">
-                    <Link
+                    <NavLink
+                        end
                         className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
                         to="/dashboard/staff/planing/create"
                     >
                         <i className="fa fa-plus-circle mr-2 text-sm"/> Ajouter
-                    </Link>
+                    </NavLink>
                 </li>
             </ul>
         </>

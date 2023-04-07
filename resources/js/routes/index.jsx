@@ -10,7 +10,6 @@ import {useSelector} from "react-redux";
 import {UserSelector} from "@/store/selector";
 import Role from "@/store/action-types/Role";
 import Logout from "@/Pages/Auth/Logout";
-import PatientIndex from "@/Pages/Patients";
 import Planing from "@/Pages/Staff/Planing";
 import CreatePlanning from "@/Pages/Staff/planing/Create";
 import UpdatePatient from "@/Pages/Staff/Patient/Update";
@@ -20,6 +19,7 @@ import UpdatePatientAdmin from "@/Pages/Admin/Patients/Update";
 import PersonnelIndexAdmin from "@/Pages/Admin/Personnels";
 import CreatePersonnelAdmin from "@/Pages/Admin/Personnels/Create";
 import UpdatePersonnelAdmin from "@/Pages/Admin/Personnels/Update";
+import PatientIndex from "@/Pages/Staff/Patient";
 
 function Routers() {
 
@@ -35,7 +35,7 @@ function Routers() {
                     <Route path="forget-password" element={<ForgetPassword/>}/>
                 </Route>
 
-                <Route path="dashboard" element={<ProtectedRoutes isAllowed={user !== null}/>}>
+                <Route path="dashboard"  element={<ProtectedRoutes isAllowed={user !== null}/>}>
                     <Route index element={<Dashboard/>}/>
                     <Route path="logout" element={<Logout/>}/>
 
@@ -55,12 +55,12 @@ function Routers() {
                         <Route path="patients">
                             <Route index element={<PatientIndexAdmin/>}/>
                             <Route path="create" element={<CreatePatientAdmin/>}/>
-                            <Route path="update" element={<UpdatePatientAdmin/>}/>
+                            <Route path="update/:id" element={<CreatePatientAdmin/>}/>
                         </Route>
                         <Route path="personnels">
                             <Route index element={<PersonnelIndexAdmin/>}/>
                             <Route path="create" element={<CreatePersonnelAdmin/>}/>
-                            <Route path="update" element={<UpdatePersonnelAdmin/>}/>
+                            <Route path="update/:id" element={<CreatePersonnelAdmin/>}/>
                         </Route>
                     </Route>
 
