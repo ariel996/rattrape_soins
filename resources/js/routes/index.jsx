@@ -20,6 +20,9 @@ import PersonnelIndexAdmin from "@/Pages/Admin/Personnels";
 import CreatePersonnelAdmin from "@/Pages/Admin/Personnels/Create";
 import UpdatePersonnelAdmin from "@/Pages/Admin/Personnels/Update";
 import PatientIndex from "@/Pages/Staff/Patient";
+import StaffAppointmentIndex from "@/Pages/Staff/Appointment";
+import StaffUpComingAppointmentIndex from "@/Pages/Staff/Appointment/UpComing";
+import StaffPassAppointmentIndex from "@/Pages/Staff/Appointment/PassAppointment";
 
 function Routers() {
 
@@ -44,6 +47,9 @@ function Routers() {
                         <Route index element={<h1> Staff Profile</h1>}/>
                         {/* Print the list of patient */}
                         <Route path="patient" element={<PatientIndex/>}/>
+                        <Route path="appointments" element={<StaffAppointmentIndex/>}/>
+                        <Route path="appointment-pass" element={<StaffPassAppointmentIndex/>}/>
+                        <Route path="appointment-up-coming" element={<StaffUpComingAppointmentIndex/>}/>
                         <Route path="patient/update" element={<UpdatePatient/>}/>
                         <Route path="planing" element={<Planing/>}/>
                         <Route path='planning/create' element={<CreatePlanning/>}/>

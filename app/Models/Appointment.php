@@ -11,12 +11,13 @@ class Appointment extends Model
 {
     use HasFactory;
 
-    public const STATUS = [
+    public array $STATUS = [
         'up_coming' => 'Up Coming',
         'validated' => 'Validated',
         'pass' => 'Pass',
         'cancel' => 'Cancel'
     ];
+
 
     /**
      * Get All observation of the appointment

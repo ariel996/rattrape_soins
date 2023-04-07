@@ -36,7 +36,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     //Only Admin and Secretary
-    Route::middleware(['auth:sanctum', 'ability:secretary,admin'])->group(function(){
+    Route::middleware(['auth:sanctum', 'ability:secretary,admin'])->group(function () {
         Route::apiResources([
             'personnels' => PersonnelController::class,
             'patients' => PatientController::class,
@@ -46,10 +46,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResources([
         //personnel appointment routes
-        'appointments'=>AppointmentController::class,
+        'appointments' => AppointmentController::class,
         //personnel availabilities routes
-        'availabilities'=>AvailabilityController::class,
+        'availabilities' => AvailabilityController::class,
     ]);
+    Route::get("appointment/{status}", [AppointmentController::class, 'indexStatus']);
 
     // only for staff member
     Route::middleware(['auth:sanctum', 'abilities:staff'])->prefix('staff')->group(function () {

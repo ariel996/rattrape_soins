@@ -68,7 +68,7 @@ class DashboardController extends Controller
     public function PatientDashboard(Request $request): JsonResponse
     {
         $user = $request->user();
-        $user = Patient::whereId($user->id)->first();
+        $user = Patient::whereUserId($user->id)->first();
 
         $query = Appointment::query()
             ->wherePatientId($user->id)

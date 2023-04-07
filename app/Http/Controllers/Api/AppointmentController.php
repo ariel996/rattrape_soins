@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
+use App\Models\Personnel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,12 +18,37 @@ class AppointmentController extends Controller
      */
     public function index(): JsonResponse
     {
+        $user = Personnel::whereUserId(Auth::user()->id)->first();
         return response()->json([
             'appointments' => AppointmentResource::collection(
-                Appointment::wherePersonnelId(Auth::user()->id)
-                    ->with(['personnel','patient',''])
+                Appointment::wherePersonnelId($user->id)
+                    ->with(['personnel', 'patient', 'scheduler'])
+                    ->latest()
                     ->get(),
             )
+        ]);
+    }
+
+    /**
+     * @param $status
+     * @return JsonResponse
+     */
+    public function indexStatus($status): JsonResponse
+    {
+        $user = Personnel::whereUserId(Auth::user()->id)->first();
+        $query = Appointment::wherePersonnelId($user->id)
+            ->with(['personnel', 'patient', 'scheduler'])
+            ->latest();
+
+        $appoint = new Appointment();
+        $appointment = match ($status) {
+            'up_coming' => $query->whereStatus($appoint->STATUS['up_coming'])->get(),
+            'pass' => $query->whereStatus($appoint->STATUS['pass'])->get(),
+            default => $query->get(),
+        };
+
+        return response()->json([
+            'appointments' => AppointmentResource::collection($appointment)
         ]);
     }
 
