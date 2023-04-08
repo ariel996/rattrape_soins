@@ -93,9 +93,14 @@ function Routers() {
                 </Route>
             </Route>
 
-            <Route path="*" element={<h1> Page Not Found </h1>}/>
+            <Route path="*" element={}/>
         </Routes>
     )
+}
+
+
+const Page4O4 = ()=>{
+
 }
 
 const ProtectedRoutes = ({isAllowed = false, redirectPath = '/login', children}) => {

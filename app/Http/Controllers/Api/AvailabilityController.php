@@ -50,6 +50,7 @@ class AvailabilityController extends Controller
             'duration' => ['required'],
         ]);
 
+        // Not True
         $validated ['personnel_id'] = Auth::user()->id;
 
         $availability = Availability::query()->updateOrCreate([
@@ -78,25 +79,30 @@ class AvailabilityController extends Controller
      * @param $availability
      * @throws \Exception
      */
-    private static function createSchedule($start, $end, $duration, $availability)
+    private static function createSchedule($availability)
     {
+
+
         try {
-            $srt = (new DateTime)->setTime($start[0], $start[1], $start[2]);
-            $ed = (new DateTime)->setTime($end[0], $end[1], $end[2]);
-            $interval = new DateInterval("PT" . $duration[0] . "H" . $duration[1] . "M" . $duration[2] . "S");
+            // creating scheduler for the given availability
+            $duration = explode(':', $availability->duration);
 
-            while ($srt < $ed) {
-                $ended = $srt;
-                $ended->add($interval);
-                Scheduler::query()->updateOrCreate([
+            $start_time = strtotime($availability->debut);
+            $end_time = strtotime($availability->fin);
+            $duration_sec = $duration[0] * 3600 + $duration[1] * 60 + $duration[2];
+
+            $time_slots = array();
+            while ($start_time < $end_time) {
+                $start_old = $start_time;
+                $start_time += $duration_sec;
+                $time_slots[] = [
+                    'start' => date('H:i:s', $start_old),
+                    'end' => date('H:i:s', $start_time),
                     'availability_id' => $availability->id,
-                ], [
-                    'start' => $srt,
-                    'end' => $ended,
-                ]);
-
-                $srt = $ended;
+                ];
             }
+
+            Scheduler::query()->upsert($time_slots, []);
 
         } catch (\Exception $e) {
             throw new \Exception("Error" . $e->getMessage());
@@ -123,6 +129,7 @@ class AvailabilityController extends Controller
      * @param Request $request
      * @param Availability $availability
      * @return JsonResponse
+     * @throws \Exception
      */
     public function update(Request $request, Availability $availability): JsonResponse
     {
@@ -139,6 +146,9 @@ class AvailabilityController extends Controller
         $availability->update(array_merge($validated, [
             'duration' => $request->duree,
         ]));
+
+        // update the scheduler for thr given availability
+        self::createSchedule($availability);
 
         return response()->json([
             'message' => 'Updated',
