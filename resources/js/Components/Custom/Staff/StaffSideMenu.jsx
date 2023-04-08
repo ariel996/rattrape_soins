@@ -84,7 +84,7 @@ export default function StaffSideMenu() {
                     </NavLink>
                 </li>
 
-                <li className="items-center">
+                {/*<li className="items-center">
                     <NavLink
                         end
                         className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
@@ -92,7 +92,7 @@ export default function StaffSideMenu() {
                     >
                         <i className="fa fa-plus-circle mr-2 text-sm"/> Ajouter
                     </NavLink>
-                </li>
+                </li>*/}
             </ul>
         </>
     )

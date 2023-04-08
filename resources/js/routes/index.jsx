@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Routes, Navigate, Outlet} from 'react-router-dom';
+import {Route, Routes, Navigate, Outlet, useNavigate} from 'react-router-dom';
 
 import Login from "@/Pages/Auth/Login";
 import Register from "@/Pages/Auth/Register";
@@ -23,6 +23,7 @@ import PatientIndex from "@/Pages/Staff/Patient";
 import StaffAppointmentIndex from "@/Pages/Staff/Appointment";
 import StaffUpComingAppointmentIndex from "@/Pages/Staff/Appointment/UpComing";
 import StaffPassAppointmentIndex from "@/Pages/Staff/Appointment/PassAppointment";
+import Authenticated from "@/Layouts/AuthenticatedLayout";
 
 function Routers() {
 
@@ -93,14 +94,28 @@ function Routers() {
                 </Route>
             </Route>
 
-            <Route path="*" element={}/>
+            <Route path="*" element={<Page4O4/>}/>
         </Routes>
     )
 }
 
 
 const Page4O4 = ()=>{
+    const navigate = useNavigate();
+    const handleClick = (e) => {
+        e.preventDefault();
+        navigate(-1)
+    }
+    return (
+        <Authenticated>
+            <div className="flex flex-col justify-center items-center h-1OO my-5 md:my-32 gap-4">
+                <h1 className="text-3xl">Page Not Found: It look like you are lost</h1>
 
+                <button onClick={handleClick} className="border px-10 rounded-lg py-3 bg-indigo-500">
+                    <i className="fa fa-arrow-left mr-3"/>Go back</button>
+            </div>
+        </Authenticated>
+    )
 }
 
 const ProtectedRoutes = ({isAllowed = false, redirectPath = '/login', children}) => {
