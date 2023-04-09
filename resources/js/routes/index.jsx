@@ -27,6 +27,7 @@ import Authenticated from "@/Layouts/AuthenticatedLayout";
 import {PersonnelIndex} from "@/Pages/Patients/PersonnelIndex";
 import BookAppointmentIndex from "@/Pages/Patients/BookAppointmentIndex";
 import PatientAppointmentIndex from "@/Pages/Patients/AppointmentIndex";
+import PatientAppointmentShow from "@/Pages/Patients/PatientAppointmentShow";
 
 function Routers() {
 
@@ -95,7 +96,7 @@ function Routers() {
                         <Route path="personnel" element={<PersonnelIndex/>}/>
                         <Route path="appointment" element={<PatientAppointmentIndex/>} />
                         <Route path="personnel/book-appointment" element={<BookAppointmentIndex/>}/>
-
+                        <Route path="appointment/update/:id" element={<PatientAppointmentShow />} />
                     </Route>
 
                 </Route>

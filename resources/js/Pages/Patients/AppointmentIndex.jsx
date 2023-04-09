@@ -33,11 +33,10 @@ export default function PatientAppointmentIndex() {
     }
 
     const TableRows = [
-        {name: "ID"},
-        {name: "Nom du patient "},
         {name: "Date du rendez-vous"},
         {name: "Heure"},
         {name: "Status"},
+        {name: "Note"},
         {name: 'Actions'}
     ]
 
@@ -57,16 +56,9 @@ export default function PatientAppointmentIndex() {
                             </tr>
                         ) : (
                             data.map((value, index) => {
-                                const {name, dob} = value.patient.account
                                 const {end, start} = value.schedule
                                 return (
                                     <tr key={index}>
-                                        <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-                                            {value.id}
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            {name}
-                                        </td>
                                         <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
                                             {value.date}
                                         </td>
@@ -78,12 +70,15 @@ export default function PatientAppointmentIndex() {
                                         <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                                             {value.status}
                                         </td>
+                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                                            {value.note}
+                                        </td>
                                         <td className="flex justify-between">
                                             <div className="px-6 py-4 text-sm text-right whitespace-nowrap">
                                                 <Link
                                                     className="text-green-500 hover:text-green-700"
                                                     href="#"
-                                                    to={"/dashboard/patient/patients/update/" + value.id}
+                                                    to={"/dashboard/patient/appointment/update/" + value.id}
                                                 >
                                                     Plus
                                                 </Link>

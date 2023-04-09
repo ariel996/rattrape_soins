@@ -19,10 +19,17 @@ const getMyAppointments = (status) => {
     return Http.get('/api/patient/appointment/' + status)
 }
 
+const getAppointmentDetail = (id) => {
+    setHeader()
+    return Http.get('/api/appointments/' + id)
+}
+
 export default {
     getPersonnels,
     getScheduler,
     bookAppointment,
     getMyAppointments,
+    getAppointmentDetail,
+
 
 }

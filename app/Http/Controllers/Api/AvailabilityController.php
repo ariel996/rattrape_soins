@@ -194,7 +194,7 @@ class AvailabilityController extends Controller
             $hn = now()->format('H');
             $return = [];
             foreach ($data as $d) {
-                $h = explode(':', $d->debut)[0];
+                $h = explode(':', $d->start)[0];
                 if ($h > $hn) {
                     $return[] = $d;
                 }

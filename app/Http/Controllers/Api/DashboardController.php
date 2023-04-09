@@ -54,7 +54,7 @@ class DashboardController extends Controller
         $query= $query->distinct('patient_id');
 
         $nbrPatient = $query->count();
-        $nbrAppointmentToday = $query->where('date_appointment', now())
+        $nbrAppointmentToday = $query->whereDate('date_appointment', now())
             ->count();
 
         return response()->json(compact('nbrPatient', 'nbrAppointmentToday','nbrAppointment'));
@@ -75,7 +75,7 @@ class DashboardController extends Controller
             ->distinct('patient_id');
 
         $nbrAppointment = $query->count();
-        $nbrAppointmentToday = $query->where('date_appointment', now())->count();
+        $nbrAppointmentToday = $query->whereDate('date_appointment', now())->count();
 
         return response()->json(compact('nbrAppointment', 'nbrAppointmentToday'));
     }
