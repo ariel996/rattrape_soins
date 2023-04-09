@@ -10,6 +10,7 @@ export default function AppointmentDetail() {
     const [loading, setLoading] = useState(false);
     const [loadingStatus, setLoadingStatus] = useState(false);
     const [loadingObservation, setLoadingObservation] = useState(false);
+    const [loadingObservationData, setLoadingObservationData] = useState(false);
     const [data, setData] = useState({});
     const [formData, setFormData] = useState({})
 
@@ -17,9 +18,11 @@ export default function AppointmentDetail() {
 
     // get the Appointment detail
     const getAppointmentDetail = async () => {
+        setLoadingObservationData(true)
         const response = await StaffServices.getAppointmentDetail(id);
         const {appointment} = response.data
         setData(appointment)
+        setLoadingObservationData(false)
     }
 
     useEffect(() => {
@@ -52,9 +55,17 @@ export default function AppointmentDetail() {
         })
     }
 
+    const DeleteObservation = (id) => {
+        StaffServices.deleteObservation(id).then((response) => {
+            getAppointmentDetail();
+            setFormData({...formData, 'content': ''})
+        }).finally(() => {
+            setLoadingObservation(false)
+        })
+    }
+
     const {patient, schedule, observations} = data
 
-    console.log(schedule, patient)
     return (
         <Authenticated>
             {loading ? (
@@ -66,20 +77,31 @@ export default function AppointmentDetail() {
                     <div className="w-full md:w-75">
                         <h1 className="text-center text-lg font-semibold py-3"> Observation de ce rendez-vous </h1>
                         <div className=" p-3 rounded-lg mb-5">
-                            {observations?.length <= 0 ? (
-                                <h1 className="p-3">No data Found </h1>
-                            ) : (
-                                observations?.map((value) => {
-                                    return (
-                                        <div className="border flex justify-between items-center rounded-lg p-2 mb-3">
-                                            <h1 className="md:text-lg">{value.content}</h1>
-                                            <PrimaryButton
-                                                className="rounded bg-red-500 w-8 h-8 flex items-center justify-center">
-                                                <i className="fa fa-close p-2 "/>
-                                            </PrimaryButton>
-                                        </div>
-                                    )
-                                })
+                            {loadingObservationData ? (
+                                <div className="flex justify-center items-center ">
+                                    <Spin />
+                                </div>
+                            ): (
+                                observations?.length <= 0 ? (
+                                    <h1 className="p-3">No data Found </h1>
+                                ) : (
+                                    observations?.map((value) => {
+                                        return (
+                                            <div key={value.id} className="border flex justify-between items-center rounded-lg p-2 mb-3">
+                                                <div className="">
+                                                    <h1 className="md:text-lg mb-3">{value.content}</h1>
+                                                    <p className="text-xs">Ajouter le: {value.created_at}</p>
+                                                </div>
+                                                <PrimaryButton
+                                                    onClick={()=>DeleteObservation(value.id)}
+                                                    data={value.id}
+                                                    className="rounded bg-red-500 w-8 h-8 flex items-center justify-center">
+                                                    <i className="fa fa-close p-2 "/>
+                                                </PrimaryButton>
+                                            </div>
+                                        )
+                                    })
+                                )
                             )}
                         </div>
 

@@ -27,6 +27,11 @@ const addObservation = (data) => {
     return Http.post('/api/observations/', data)
 }
 
+const deleteObservation = (id) => {
+    setHeader()
+    return Http.delete('/api/observations/' + id)
+}
+
 const getMyPlannings = () => {
     setHeader()
     return Http.get('/api/staff/availabilities');
@@ -50,7 +55,9 @@ export default {
     getMyAppointment,
     getAppointmentDetail,
     updateStatusAppointment,
+
     addObservation,
+    deleteObservation,
 
     getMyPlannings,
     getMyPlanning,
