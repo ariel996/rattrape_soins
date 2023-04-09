@@ -79,7 +79,7 @@ export default function StaffAppointmentIndex() {
                                                 <Link
                                                     className="text-green-500 hover:text-green-700"
                                                     href="#"
-                                                    to={"/dashboard/admin/patients/update/" + value.id}
+                                                    to={"/dashboard/staff/appointments/more/" + value.id}
                                                 >
                                                     More
                                                 </Link>

@@ -25,6 +25,8 @@ class AppointmentResource extends JsonResource
                 $this->whenLoaded('patient')),
             'schedule'=> new SchedulerResource(
                 $this->whenLoaded('scheduler')),
+            'observations'=> ObservationResource::collection(
+                $this->whenLoaded('observations')),
         ];
     }
 }

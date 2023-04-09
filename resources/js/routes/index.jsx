@@ -28,6 +28,7 @@ import {PersonnelIndex} from "@/Pages/Patients/PersonnelIndex";
 import BookAppointmentIndex from "@/Pages/Patients/BookAppointmentIndex";
 import PatientAppointmentIndex from "@/Pages/Patients/AppointmentIndex";
 import PatientAppointmentShow from "@/Pages/Patients/PatientAppointmentShow";
+import AppointmentDetail from "@/Pages/Staff/Appointment/AppointmentDetails";
 
 function Routers() {
 
@@ -43,7 +44,7 @@ function Routers() {
                     <Route path="forget-password" element={<ForgetPassword/>}/>
                 </Route>
 
-                <Route path="dashboard"  element={<ProtectedRoutes isAllowed={user !== null}/>}>
+                <Route path="dashboard" element={<ProtectedRoutes isAllowed={user !== null}/>}>
                     <Route index element={<Dashboard/>}/>
                     <Route path="logout" element={<Logout/>}/>
 
@@ -53,6 +54,7 @@ function Routers() {
                         {/* Print the list of patient */}
                         <Route path="patient" element={<PatientIndex/>}/>
                         <Route path="appointments" element={<StaffAppointmentIndex/>}/>
+                        <Route path="appointments/more/:id" element={<AppointmentDetail/>}/>
                         <Route path="appointment-pass" element={<StaffPassAppointmentIndex/>}/>
                         <Route path="appointment-up-coming" element={<StaffUpComingAppointmentIndex/>}/>
                         <Route path="patient/update" element={<UpdatePatient/>}/>
@@ -94,9 +96,9 @@ function Routers() {
                     <Route path="patient" element={<AllowRoutes role={Role.patient} redirectPath='/dashboard'/>}>
                         <Route index element={<h1> Patient Profile</h1>}/>
                         <Route path="personnel" element={<PersonnelIndex/>}/>
-                        <Route path="appointment" element={<PatientAppointmentIndex/>} />
+                        <Route path="appointment" element={<PatientAppointmentIndex/>}/>
                         <Route path="personnel/book-appointment" element={<BookAppointmentIndex/>}/>
-                        <Route path="appointment/update/:id" element={<PatientAppointmentShow />} />
+                        <Route path="appointment/update/:id" element={<PatientAppointmentShow/>}/>
                     </Route>
 
                 </Route>
@@ -108,7 +110,7 @@ function Routers() {
 }
 
 
-const Page4O4 = ()=>{
+const Page4O4 = () => {
     const navigate = useNavigate();
     const handleClick = (e) => {
         e.preventDefault();
@@ -120,7 +122,8 @@ const Page4O4 = ()=>{
                 <h1 className="text-3xl">Page Not Found: It look like you are lost</h1>
 
                 <button onClick={handleClick} className="border px-10 rounded-lg py-3 bg-indigo-500">
-                    <i className="fa fa-arrow-left mr-3"/>Go back</button>
+                    <i className="fa fa-arrow-left mr-3"/>Go back
+                </button>
             </div>
         </Authenticated>
     )

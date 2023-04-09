@@ -81,7 +81,6 @@ class AppointmentController extends Controller
     }
 
 
-
     /**
      * register a patient for an appointment
      * @param Request $request
@@ -131,7 +130,7 @@ class AppointmentController extends Controller
     {
         //
         $appointment = new AppointmentResource(
-            $appointment->load(['availability', 'patient', 'observations', 'personnel'])
+            $appointment->load(['scheduler', 'patient', 'observations', 'personnel'])
         );
         return response()->json(compact('appointment'));
     }
@@ -146,6 +145,25 @@ class AppointmentController extends Controller
     public function update(Request $request, Appointment $appointment)
     {
         //
+    }
+
+    /**
+     * Update the Status of the specific resource .
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param Appointment $appointment
+     * @return JsonResponse
+     */
+    public function updateStatus(Request $request, Appointment $appointment): JsonResponse
+    {
+        $request->validate([
+            'status' => ['required'],
+        ]);
+
+        $appointment->update([
+            'status' => $request->status,
+        ]);
+        return response()->json('Updated');
     }
 
     /**
