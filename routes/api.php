@@ -60,6 +60,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // only for patient member
     Route::middleware(['auth:sanctum', 'abilities:patient'])->prefix('patient')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'PatientDashboard']);
+        Route::get('personnel', [PersonnelController::class, 'index']);
+        Route::post('scheduler', [AvailabilityController::class, 'getScheduler']);
+        Route::get('appointment/{status?}', [AppointmentController::class, 'patientIndexStatus']);
     });
 
 

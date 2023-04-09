@@ -14,13 +14,13 @@ class Availability extends Model
     protected $guarded = [];
 
     public array $days = [
-        'monday' => 'Lundi',
-        'tuesday' => 'Mardi',
-        'wednesday' => 'Mercredi',
-        'thursday' => 'Jeudi',
-        'friday' => 'Vendredi',
-        'saturday' => 'Samedi',
-        'sunday' => 'Dimanche',
+        'Monday' => 'Lundi',
+        'Tuesday' => 'Mardi',
+        'Wednesday' => 'Mercredi',
+        'Thursday' => 'Jeudi',
+        'Friday' => 'Vendredi',
+        'Saturday' => 'Samedi',
+        'Sunday' => 'Dimanche',
     ];
 
     public function initPersonnelAvailability($personnelId)

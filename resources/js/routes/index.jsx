@@ -24,6 +24,9 @@ import StaffAppointmentIndex from "@/Pages/Staff/Appointment";
 import StaffUpComingAppointmentIndex from "@/Pages/Staff/Appointment/UpComing";
 import StaffPassAppointmentIndex from "@/Pages/Staff/Appointment/PassAppointment";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
+import {PersonnelIndex} from "@/Pages/Patients/PersonnelIndex";
+import BookAppointmentIndex from "@/Pages/Patients/BookAppointmentIndex";
+import PatientAppointmentIndex from "@/Pages/Patients/AppointmentIndex";
 
 function Routers() {
 
@@ -86,9 +89,13 @@ function Routers() {
                         </Route>
                     </Route>
 
-                    {/* Staff patient Are Here */}
+                    {/* Patient Are Here */}
                     <Route path="patient" element={<AllowRoutes role={Role.patient} redirectPath='/dashboard'/>}>
                         <Route index element={<h1> Patient Profile</h1>}/>
+                        <Route path="personnel" element={<PersonnelIndex/>}/>
+                        <Route path="appointment" element={<PatientAppointmentIndex/>} />
+                        <Route path="personnel/book-appointment" element={<BookAppointmentIndex/>}/>
+
                     </Route>
 
                 </Route>

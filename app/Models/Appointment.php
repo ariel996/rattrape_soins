@@ -18,6 +18,7 @@ class Appointment extends Model
         'cancel' => 'Cancel'
     ];
 
+    protected $guarded = [];
 
     /**
      * Get All observation of the appointment

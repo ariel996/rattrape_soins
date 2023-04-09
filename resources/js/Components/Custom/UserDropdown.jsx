@@ -1,6 +1,8 @@
 import React from "react";
 import {createPopper} from "@popperjs/core";
 import NavLink from "@/Components/NavLink";
+import {useSelector} from "react-redux";
+import {RoleSector} from "@/store/selector";
 
 const UserDropdown = () => {
     // dropdown props
@@ -8,6 +10,7 @@ const UserDropdown = () => {
 
     const btnDropdownRef = React.createRef();
     const popoverDropdownRef = React.createRef();
+    const role = useSelector(RoleSector).toLowerCase();
 
     const openDropdownPopover = () => {
         createPopper(btnDropdownRef.current, popoverDropdownRef.current, {
@@ -48,6 +51,7 @@ const UserDropdown = () => {
                 style={{minWidth: "12rem"}}
             >
                 <NavLink
+                    to={"/dashboard/" + role}
                     className={
                         "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
                     }

@@ -25,5 +25,14 @@ class AdminSeed extends Seeder
             'role_id'=> 1,
             'password'=> Hash::make('password'),
         ]);
+
+        User::query()->updateOrCreate([
+            'email' => 'secretary@gmail.com',
+        ], [
+            'name' => 'Secretary Seed',
+            'dob'=> now(),
+            'role_id'=> 2,
+            'password'=> Hash::make('password'),
+        ]);
     }
 }

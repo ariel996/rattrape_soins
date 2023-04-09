@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AvailabilityResource;
+use App\Models\Appointment;
 use App\Models\Availability;
 use App\Models\Scheduler;
 use Carbon\Exceptions\InvalidFormatException;
@@ -81,8 +82,6 @@ class AvailabilityController extends Controller
      */
     private static function createSchedule($availability)
     {
-
-
         try {
             // creating scheduler for the given availability
             $duration = explode(':', $availability->duration);
@@ -153,6 +152,57 @@ class AvailabilityController extends Controller
         return response()->json([
             'message' => 'Updated',
         ]);
+    }
+
+
+    /**
+     * return available schedule for a given date
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getScheduler(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'date' => ['required'],
+            'personnel_id' => ['required'],
+        ]);
+
+        $appointments = Appointment::query()
+            ->whereDate('date_appointment', $validated['date'])
+            ->where('personnel_id',$validated['personnel_id'])
+            ->pluck('scheduler_id');
+
+        // get availability of the personnel on the given day
+        $day = date('l', strtotime($validated['date']));
+        $day = (new Availability())->days[$day];
+
+        $availability = Availability::query()
+            ->where('day', $day)
+            ->wherePersonnelId($validated['personnel_id'])
+            ->first();
+
+        $query = Scheduler::query()->where('availability_id', $availability->id);
+
+        if ($appointments->count() === 0) {
+            $data = $query->get();
+        } else {
+            $data = $query->whereNotIn('id', $appointments)
+                ->get();
+        }
+
+        if ($validated['date'] == now()->format('Y-m-d')) {
+            $hn = now()->format('H');
+            $return = [];
+            foreach ($data as $d) {
+                $h = explode(':', $d->debut)[0];
+                if ($h > $hn) {
+                    $return[] = $d;
+                }
+            }
+            return response()->json($return);
+        } else {
+            return response()->json($data);
+        }
     }
 
     /**
