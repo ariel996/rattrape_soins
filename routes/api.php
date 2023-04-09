@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AvailabilityController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\ObservationController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\PersonnelController;
 use App\Http\Controllers\Api\SubscriptionController;
@@ -47,6 +48,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResources([
         //personnel appointment routes
         'appointments' => AppointmentController::class,
+        'observations'=>ObservationController::class,
     ]);
     Route::get("appointment/{status}", [AppointmentController::class, 'indexStatus']);
     Route::get("appointment/show/{appointment}", [AppointmentController::class, 'show']);

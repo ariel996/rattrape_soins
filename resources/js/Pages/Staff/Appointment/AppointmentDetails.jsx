@@ -9,6 +9,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 export default function AppointmentDetail() {
     const [loading, setLoading] = useState(false);
     const [loadingStatus, setLoadingStatus] = useState(false);
+    const [loadingObservation, setLoadingObservation] = useState(false);
     const [data, setData] = useState({});
     const [formData, setFormData] = useState({})
 
@@ -38,6 +39,19 @@ export default function AppointmentDetail() {
             .finally(() => setLoadingStatus(false))
     }
 
+    const handleAddObservation = (e) => {
+        e.preventDefault();
+        setLoadingObservation(true);
+        StaffServices.addObservation(
+            {'content': formData.content, 'appointment_id': id}
+        ).then((response) => {
+            getAppointmentDetail();
+            setFormData({...formData, 'content': ''})
+        }).finally(() => {
+            setLoadingObservation(false)
+        })
+    }
+
     const {patient, schedule, observations} = data
 
     console.log(schedule, patient)
@@ -48,9 +62,43 @@ export default function AppointmentDetail() {
                     <Spin/>
                 </div>
             ) : (
-                <div className="flex justify-center items-center gap-3">
+                <div className="flex justify-center gap-3">
                     <div className="w-full md:w-75">
-                        <h1 className="text-center text-lg font-semibold"> Observation de ce rendez-vous </h1>
+                        <h1 className="text-center text-lg font-semibold py-3"> Observation de ce rendez-vous </h1>
+                        <div className=" p-3 rounded-lg mb-5">
+                            {observations?.length <= 0 ? (
+                                <h1 className="p-3">No data Found </h1>
+                            ) : (
+                                observations?.map((value) => {
+                                    return (
+                                        <div className="border flex justify-between items-center rounded-lg p-2 mb-3">
+                                            <h1 className="md:text-lg">{value.content}</h1>
+                                            <PrimaryButton
+                                                className="rounded bg-red-500 w-8 h-8 flex items-center justify-center">
+                                                <i className="fa fa-close p-2 "/>
+                                            </PrimaryButton>
+                                        </div>
+                                    )
+                                })
+                            )}
+                        </div>
+
+                        <div className="border shadow-lg rounded-lg p-2">
+                            <h1 className="text-center font-semibold">Ajouter des Observation a ce rendez-vous </h1>
+                            <form onSubmit={handleAddObservation}>
+                                <textarea onChange={handleChange}
+                                          name="content" id="content"
+                                          value={formData.content}
+                                          className="w-full rounded m-2 mr-4"
+                                          rows="5"/>
+
+                                <div className="flex items-center justify-end mt-4">
+                                    <PrimaryButton className="" disabled={loadingObservation}>
+                                        Ajouter
+                                    </PrimaryButton>
+                                </div>
+                            </form>
+                        </div>
 
                     </div>
                     <div className="w-full md:w-1/3 pl-2 border-l flex flex-col gap-5 ">

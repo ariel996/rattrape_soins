@@ -22,6 +22,11 @@ const updateStatusAppointment = (id, data) => {
     return Http.post('/api/staff/appointment/update/status/' + id, data)
 }
 
+const addObservation = (data) => {
+    setHeader()
+    return Http.post('/api/observations/', data)
+}
+
 const getMyPlannings = () => {
     setHeader()
     return Http.get('/api/staff/availabilities');
@@ -45,6 +50,7 @@ export default {
     getMyAppointment,
     getAppointmentDetail,
     updateStatusAppointment,
+    addObservation,
 
     getMyPlannings,
     getMyPlanning,

@@ -22,11 +22,18 @@ class ObservationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         //
+        $validated = $request->validate([
+            'content'=>['required'],
+            'appointment_id'=> ['required']
+        ]);
+
+        Observation::query()->create($validated);
+        return response()->json('Ajouté');
     }
 
     /**
