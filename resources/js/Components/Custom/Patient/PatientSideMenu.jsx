@@ -58,24 +58,24 @@ export default function PatientSideMenu() {
                 </li>
 
                 <li className="items-center">
-                    <Link state={'up_coming'}
+                    <NavLink state={'up_coming'}
                         end
                         className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                        to="/dashboard/patient/appointment"
+                        to="/dashboard/patient/appointment/up_coming"
                     >
                         <i className="fa fa-arrow-up mr-2 text-sm"/> A venir
-                    </Link>
+                    </NavLink>
                 </li>
 
                 <li className="items-center">
-                    <Link
+                    <NavLink
                         state={'pass'}
                         end
                         className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                        to="/dashboard/patient/appointment"
+                        to="/dashboard/patient/appointment/pass"
                     >
                         <i className="fa fa-arrow-down mr-2 text-sm"/> Passer
-                    </Link>
+                    </NavLink>
                 </li>
 
             </ul>
