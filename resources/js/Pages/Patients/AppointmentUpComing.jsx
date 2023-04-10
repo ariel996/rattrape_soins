@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 import PatientServices from "@/store/services/PatientServices";
 import {useLocation} from "react-router-dom";
 
-export default function PatientAppointmentIndex() {
+export default function PatientAppointmentUpComing() {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState([]);
     const [error, setError] = useState('')
@@ -48,11 +48,11 @@ export default function PatientAppointmentIndex() {
                 </div>
             ) : (
                 <>
-                    <h1 className="text-center text-xl">Liste de tous Mes Rendez-vous </h1>
+                    <h1 className="text-center text-xl">Liste de Mes Rendez-vous à venir </h1>
                     <Table rows={TableRows}>
                         {data.length <= 0 ? (
                             <tr>
-                                <td colSpan="5" className="p-3 text-center">Pas de rendez-vous pour l'instant </td>
+                                <td colSpan="5" className="p-3 text-center">Pas de rendez-vous à venir </td>
                             </tr>
                         ) : (
                             data.map((value, index) => {

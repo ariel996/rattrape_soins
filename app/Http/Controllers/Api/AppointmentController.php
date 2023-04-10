@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AppointmentResource;
+use App\Http\Resources\PersonnelResource;
 use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\Personnel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AppointmentController extends Controller
 {
@@ -157,13 +159,42 @@ class AppointmentController extends Controller
     public function updateStatus(Request $request, Appointment $appointment): JsonResponse
     {
         $request->validate([
-            'status' => ['required'],
+            'status' => ['required', Rule::in(array_values((new Appointment())->STATUS))],
         ]);
 
         $appointment->update([
             'status' => $request->status,
         ]);
         return response()->json('Updated');
+    }
+
+    /**
+     * @param Request $request
+     * @param Appointment $appointment
+     * @return JsonResponse
+     */
+    public function note(Request $request, Appointment $appointment): JsonResponse
+    {
+        $validated = $request->validate([
+            'note' => ['required', 'integer'],
+        ]);
+
+        $appointment->update([
+            'note' => $validated['note'],
+        ]);
+
+        // update the average note of the personnel
+        $personnel = Personnel::whereId($appointment->personnel_id)
+            ->with('appointments', function ($query) {
+                $query->whereNotNull('note');
+            })->first();
+        $appointments = $personnel->appointments;
+
+        $personnel->update([
+            'note' => $appointments->sum('note') / $appointments->count()
+        ]);
+
+        return response()->json("Updated");
     }
 
     /**

@@ -19,7 +19,12 @@ const getAppointmentDetail = (id) => {
 }
 const updateStatusAppointment = (id, data) => {
     setHeader()
-    return Http.post('/api/staff/appointment/update/status/' + id, data)
+    return Http.post('/api/appointment/update/status/' + id, data)
+}
+
+const updateNoteAppointment = (id, data) => {
+    setHeader()
+    return Http.post('/api/patient/appointment/update/note/' + id, data)
 }
 
 const addObservation = (data) => {
@@ -55,6 +60,7 @@ export default {
     getMyAppointment,
     getAppointmentDetail,
     updateStatusAppointment,
+    updateNoteAppointment,
 
     addObservation,
     deleteObservation,
