@@ -5,3 +5,5 @@ export const MessageSelector = (state) => state.messages
 export const UserSelector = (state)=> state.Auth.user
 
 export const TokenSelector = (state)=> state.Auth.access_token
+
+export const RoleSector =(state) => state.Auth.user.role

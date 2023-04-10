@@ -1,26 +1,30 @@
+import React, {useEffect, useState} from 'react'
+import StaffServices from "@/store/services/StaffServices";
+import AuthServices from "@/store/services/AdminServices";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import Spin from "@/Components/Custom/Spin";
 import Table from "@/Components/Custom/Table";
 import {Link} from "react-router-dom";
-import React, {useEffect, useState} from "react";
-import StaffServices from "@/store/services/StaffServices";
-import AuthServices from "@/store/services/AdminServices";
+import PatientServices from "@/store/services/PatientServices";
+import {useLocation} from "react-router-dom";
 
-export default function PatientIndex() {
+export default function PatientAppointmentIndex() {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState([]);
     const [error, setError] = useState('')
 
+    const {state} = useLocation();
+
     useEffect(() => {
-        getPatients();
+        getMyAppointments();
     }, []);
 
-    const getPatients = () => {
-        StaffServices.getMyPatients()
+    const getMyAppointments = () => {
+        PatientServices.getMyAppointments(state)
             .then((response) => {
                 setLoading(false)
-                const {patients} = response.data
-                return setData(patients)
+                const {appointments} = response.data
+                return setData(appointments)
             })
             .catch(() => {
                 setLoading(false)
@@ -29,10 +33,10 @@ export default function PatientIndex() {
     }
 
     const TableRows = [
-        {name: "ID"},
-        {name: "Name"},
-        {name: "Surname"},
-        {name: "email"},
+        {name: "Date du rendez-vous"},
+        {name: "Heure"},
+        {name: "Status"},
+        {name: "Note"},
         {name: 'Actions'}
     ]
 
@@ -44,44 +48,46 @@ export default function PatientIndex() {
                 </div>
             ) : (
                 <>
-                    <h1 className="text-center text-xl">Liste de Mes patients </h1>
+                    <h1 className="text-center text-xl">Liste de Mes Rendez-vous </h1>
                     <Table rows={TableRows}>
-                        { data.length<=0 ? (
+                        {data.length <= 0 ? (
                             <tr>
-                                <td colSpan="5" className="p-3 text-center">No data found </td>
+                                <td colSpan="5" className="p-3 text-center">No data found</td>
                             </tr>
-                        ): (
+                        ) : (
                             data.map((value, index) => {
-                                const {name, surname, email} = value.account
+                                const {end, start} = value.schedule
                                 return (
                                     <tr key={index}>
                                         <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-                                            {value.id}
+                                            {value.date}
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            {name}
+                                            <span className="font-medium">Debut:</span> {start} <br/>
+                                            <span className="font-medium"> Fin: </span> {end}
+                                        </td>
+
+                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                                            {value.status}
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            {surname}
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            {email}
+                                            {value.note}
                                         </td>
                                         <td className="flex justify-between">
                                             <div className="px-6 py-4 text-sm text-right whitespace-nowrap">
                                                 <Link
                                                     className="text-green-500 hover:text-green-700"
                                                     href="#"
-                                                    to={"/dashboard/admin/patients/update/" + value.id}
+                                                    to={"/dashboard/patient/appointment/update/" + value.id}
                                                 >
-                                                    More
+                                                    Plus
                                                 </Link>
                                             </div>
                                         </td>
                                     </tr>
                                 )
                             })
-                        )  }
+                        )}
                     </Table>
                 </>
 

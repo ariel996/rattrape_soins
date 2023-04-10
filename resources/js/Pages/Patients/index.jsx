@@ -26,8 +26,14 @@ export default function PatientIndex() {
             <div className="flex flex-wrap gap-6">
                 {data ? (
                     <>
-                        <StatCard loading={loading} title="Rendez Vous" value={data.nbrAppointment} icon='fa fa-calendar-alt'/>
-                        <StatCard loading={loading} title="Rendez Vous Ajourd'hui " value={data.nbrAppointmentToday} icon='fa fa-calendar-alt'/>
+                        <StatCard loading={loading} title="Rendez Vous"
+                                  value={data.nbrAppointment}
+                                  icon='fa fa-calendar-alt'
+                        />
+                        <StatCard loading={loading} title="Rendez Vous Ajourd'hui "
+                                  value={data.nbrAppointmentToday}
+                                  icon='fa fa-calendar-alt'
+                        />
                     </>
                 ) : (
                     <h1>{error}</h1>

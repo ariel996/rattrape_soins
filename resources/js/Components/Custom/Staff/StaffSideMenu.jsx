@@ -38,11 +38,12 @@ export default function StaffSideMenu() {
                 Rendez-vous
             </h6>
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
+
                 <li className="items-center">
                     <NavLink
                         end
                         className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                        to="/dashboard/staff/planing"
+                        to="/dashboard/staff/appointment-up-coming"
                     >
                         <i className="fa fa-arrow-up mr-2 text-sm"/> A venir
                     </NavLink>
@@ -52,9 +53,18 @@ export default function StaffSideMenu() {
                     <NavLink
                         end
                         className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                        to="/dashboard/staff/planing/create"
+                        to="/dashboard/staff/appointment-pass"
                     >
                         <i className="fa fa-arrow-down mr-2 text-sm"/> Passer
+                    </NavLink>
+                </li>
+                <li className="items-center">
+                    <NavLink
+                        end
+                        className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
+                        to="/dashboard/staff/appointments"
+                    >
+                        <i className="fa fa-calendar-alt mr-2 text-sm"/> Tous
                     </NavLink>
                 </li>
             </ul>
@@ -74,7 +84,7 @@ export default function StaffSideMenu() {
                     </NavLink>
                 </li>
 
-                <li className="items-center">
+                {/*<li className="items-center">
                     <NavLink
                         end
                         className="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
@@ -82,7 +92,7 @@ export default function StaffSideMenu() {
                     >
                         <i className="fa fa-plus-circle mr-2 text-sm"/> Ajouter
                     </NavLink>
-                </li>
+                </li>*/}
             </ul>
         </>
     )

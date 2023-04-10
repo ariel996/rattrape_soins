@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AvailabilityController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\ObservationController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\PersonnelController;
 use App\Http\Controllers\Api\SubscriptionController;
@@ -36,7 +37,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     //Only Admin and Secretary
-    Route::middleware(['auth:sanctum', 'ability:secretary,admin'])->group(function(){
+    Route::middleware(['auth:sanctum', 'ability:secretary,admin'])->group(function () {
         Route::apiResources([
             'personnels' => PersonnelController::class,
             'patients' => PatientController::class,
@@ -46,20 +47,27 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResources([
         //personnel appointment routes
-        'appointments'=>AppointmentController::class,
-        //personnel availabilities routes
-        'availabilities'=>AvailabilityController::class,
+        'appointments' => AppointmentController::class,
+        'observations'=>ObservationController::class,
     ]);
+    Route::get("appointment/{status}", [AppointmentController::class, 'indexStatus']);
+    Route::get("appointment/show/{appointment}", [AppointmentController::class, 'show']);
 
     // only for staff member
     Route::middleware(['auth:sanctum', 'abilities:staff'])->prefix('staff')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'StaffDashboard']);
         Route::get('patient', [PatientController::class, 'DoctorPatient']);
+
+        Route::post('appointment/update/status/{appointment}', [AppointmentController::class, 'updateStatus']);
+        Route::apiResource('availabilities', AvailabilityController::class);
     });
 
     // only for patient member
     Route::middleware(['auth:sanctum', 'abilities:patient'])->prefix('patient')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'PatientDashboard']);
+        Route::get('personnel', [PersonnelController::class, 'index']);
+        Route::post('scheduler', [AvailabilityController::class, 'getScheduler']);
+        Route::get('appointment/{status?}', [AppointmentController::class, 'patientIndexStatus']);
     });
 
 

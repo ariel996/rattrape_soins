@@ -43,15 +43,14 @@ class PatientController extends Controller
         $id = $request->user()->id;
         $user = Personnel::whereUserId($id)->first();
 
-        $appointment = Appointment::query()
-            ->wherePersonnelId($user->id)
-            ->distinct('patient_id')
-            ->with('patient')
-            ->get();
+        $patient = Patient::query()
+            ->whereHas('appointment', function($query) use ($user) {
+            $query->where('personnel_id', $user->id);
+        })->get();
 
-        $appointments = AppointmentResource::collection($appointment);
+        $patients = PatientResource::collection($patient);
 
-        return response()->json(compact('appointments'));
+        return response()->json(compact('patients'));
     }
 
     /**

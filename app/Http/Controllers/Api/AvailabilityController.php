@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AvailabilityResource;
+use App\Models\Appointment;
 use App\Models\Availability;
 use App\Models\Scheduler;
 use Carbon\Exceptions\InvalidFormatException;
@@ -12,20 +13,23 @@ use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AvailabilityController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $user = $request->user();
+        $p = $user->personnel()->with('availabilities')->first();
+
         return response()->json([
-            'availabilities' => AvailabilityResource::collection(
-                Availability::wherePersonnelId(Auth::user())->get()
-            )
+            'availabilities' => AvailabilityResource::collection($p->availabilities)
         ]);
     }
 
@@ -47,6 +51,7 @@ class AvailabilityController extends Controller
             'duration' => ['required'],
         ]);
 
+        // Not True
         $validated ['personnel_id'] = Auth::user()->id;
 
         $availability = Availability::query()->updateOrCreate([
@@ -75,25 +80,28 @@ class AvailabilityController extends Controller
      * @param $availability
      * @throws \Exception
      */
-    private static function createSchedule($start, $end, $duration, $availability)
+    private static function createSchedule($availability)
     {
         try {
-            $srt = (new DateTime)->setTime($start[0], $start[1], $start[2]);
-            $ed = (new DateTime)->setTime($end[0], $end[1], $end[2]);
-            $interval = new DateInterval("PT" . $duration[0] . "H" . $duration[1] . "M" . $duration[2] . "S");
+            // creating scheduler for the given availability
+            $duration = explode(':', $availability->duration);
 
-            while ($srt < $ed) {
-                $ended = $srt;
-                $ended->add($interval);
-                Scheduler::query()->updateOrCreate([
+            $start_time = strtotime($availability->debut);
+            $end_time = strtotime($availability->fin);
+            $duration_sec = $duration[0] * 3600 + $duration[1] * 60 + $duration[2];
+
+            $time_slots = array();
+            while ($start_time < $end_time) {
+                $start_old = $start_time;
+                $start_time += $duration_sec;
+                $time_slots[] = [
+                    'start' => date('H:i:s', $start_old),
+                    'end' => date('H:i:s', $start_time),
                     'availability_id' => $availability->id,
-                ], [
-                    'start' => $srt,
-                    'end' => $ended,
-                ]);
-
-                $srt = $ended;
+                ];
             }
+
+            Scheduler::query()->upsert($time_slots, []);
 
         } catch (\Exception $e) {
             throw new \Exception("Error" . $e->getMessage());
@@ -103,30 +111,104 @@ class AvailabilityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Availability $availability
-     * @return \Illuminate\Http\Response
+     * @param Availability $availability
+     * @return JsonResponse
      */
     public function show(Availability $availability)
     {
         //
+        return response()->json([
+            'availability' => new AvailabilityResource($availability)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param \App\Models\Availability $availability
-     * @return \Illuminate\Http\Response
+     * @param Availability $availability
+     * @return JsonResponse
+     * @throws \Exception
      */
-    public function update(Request $request, Availability $availability)
+    public function update(Request $request, Availability $availability): JsonResponse
     {
-        //
+
+        $validated = $request->validate([
+            'day' => ['required', Rule::in(array_values((new Availability())->days))],
+            'debut' => ['required'],
+            'fin' => ['required'],
+        ]);
+        $request->validate([
+            'duree' => ['required']
+        ]);
+
+        $availability->update(array_merge($validated, [
+            'duration' => $request->duree,
+        ]));
+
+        // update the scheduler for thr given availability
+        self::createSchedule($availability);
+
+        return response()->json([
+            'message' => 'Updated',
+        ]);
+    }
+
+
+    /**
+     * return available schedule for a given date
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getScheduler(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'date' => ['required'],
+            'personnel_id' => ['required'],
+        ]);
+
+        $appointments = Appointment::query()
+            ->whereDate('date_appointment', $validated['date'])
+            ->where('personnel_id',$validated['personnel_id'])
+            ->pluck('scheduler_id');
+
+        // get availability of the personnel on the given day
+        $day = date('l', strtotime($validated['date']));
+        $day = (new Availability())->days[$day];
+
+        $availability = Availability::query()
+            ->where('day', $day)
+            ->wherePersonnelId($validated['personnel_id'])
+            ->first();
+
+        $query = Scheduler::query()->where('availability_id', $availability->id);
+
+        if ($appointments->count() === 0) {
+            $data = $query->get();
+        } else {
+            $data = $query->whereNotIn('id', $appointments)
+                ->get();
+        }
+
+        if ($validated['date'] == now()->format('Y-m-d')) {
+            $hn = now()->format('H');
+            $return = [];
+            foreach ($data as $d) {
+                $h = explode(':', $d->start)[0];
+                if ($h > $hn) {
+                    $return[] = $d;
+                }
+            }
+            return response()->json($return);
+        } else {
+            return response()->json($data);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Availability $availability
+     * @param Availability $availability
      * @return \Illuminate\Http\Response
      */
     public function destroy(Availability $availability)

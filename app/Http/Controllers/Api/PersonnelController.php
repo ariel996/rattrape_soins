@@ -8,6 +8,7 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\PersonnelResource;
 use App\Models\Appointment;
+use App\Models\Availability;
 use App\Models\Personnel;
 use App\Models\Role;
 use App\Models\User;
@@ -81,6 +82,9 @@ class PersonnelController extends Controller
                 'user_id' => $user->id,
             ])
         );
+
+        //init availability of the personnel
+        (new Availability())->initPersonnelAvailability($personnel->id);
 
         return response()->json(compact('personnel'));
     }

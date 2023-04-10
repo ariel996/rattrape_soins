@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
+use App\Models\Patient;
+use App\Models\Personnel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,14 +19,67 @@ class AppointmentController extends Controller
      */
     public function index(): JsonResponse
     {
+        $user = Personnel::whereUserId(Auth::user()->id)->first();
         return response()->json([
             'appointments' => AppointmentResource::collection(
-                Appointment::wherePersonnelId(Auth::user()->id)
-                    ->with(['personnel','patient',''])
+                Appointment::wherePersonnelId($user->id)
+                    ->with(['personnel', 'patient', 'scheduler'])
+                    ->latest()
                     ->get(),
             )
         ]);
     }
+
+    /**
+     * Return the personnel appointment dependant on the status
+     * @param $status
+     * @return JsonResponse
+     */
+    public function indexStatus($status): JsonResponse
+    {
+        $user = Personnel::whereUserId(Auth::user()->id)->first();
+        $query = Appointment::wherePersonnelId($user->id)
+            ->with(['personnel', 'patient', 'scheduler'])
+            ->latest();
+
+        $appoint = new Appointment();
+        $appointment = match ($status) {
+            'up_coming' => $query->whereStatus($appoint->STATUS['up_coming'])->get(),
+            'pass' => $query->whereStatus($appoint->STATUS['pass'])->get(),
+            default => $query->get(),
+        };
+
+        return response()->json([
+            'appointments' => AppointmentResource::collection($appointment)
+        ]);
+    }
+
+
+    /**
+     * Return the Patient appointment dependant on the status
+     * @param $status
+     * @return JsonResponse
+     */
+    public function patientIndexStatus($status): JsonResponse
+    {
+        $user = Patient::whereUserId(Auth::user()->id)->first();
+
+        $query = Appointment::wherePatientId($user->id)
+            ->with(['personnel', 'patient', 'scheduler'])
+            ->latest();
+
+        $appoint = new Appointment();
+        $appointment = match ($status) {
+            'up_coming' => $query->whereStatus($appoint->STATUS['up_coming'])->get(),
+            'pass' => $query->whereStatus($appoint->STATUS['pass'])->get(),
+            default => $query->get(),
+        };
+
+        return response()->json([
+            'appointments' => AppointmentResource::collection($appointment)
+        ]);
+    }
+
 
     /**
      * register a patient for an appointment
@@ -35,18 +90,21 @@ class AppointmentController extends Controller
     {
         $validated = $request->validate([
             'personnel_id' => ['required', 'exists:personnels,id'],
-            'availability_id' => ['required', 'exists:availabilities,id'],
+            'scheduler_id' => ['required', 'exists:schedulers,id'],
+            'date_appointment' => ['required'],
         ], [
             'personnel_id.exists' => 'The select personnel is not more with us',
-            'availability_id.exists' => 'The selected availability is not more',
+            'scheduler_id.exists' => 'The selected Scheduler is not more',
         ]);
-        $validated['patient_id'] = Auth::user()->id;
+        $patient = Patient::whereUserId($request->user()->id)->first();
+        $validated['patient_id'] = $patient->id;
+        $validated['note'] = 0;
 
-        $appointment = Appointment::query()->create([$validated]);
+        $appointment = Appointment::query()->create($validated);
 
         return response()->json([
             'appointment' => new AppointmentResource(
-                $appointment->load(['personnel', 'patient', 'availability'])
+                $appointment->load(['personnel', 'patient', 'scheduler'])
             )
         ]);
     }
@@ -72,7 +130,7 @@ class AppointmentController extends Controller
     {
         //
         $appointment = new AppointmentResource(
-            $appointment->load(['availability', 'patient', 'observations', 'personnel'])
+            $appointment->load(['scheduler', 'patient', 'observations', 'personnel'])
         );
         return response()->json(compact('appointment'));
     }
@@ -87,6 +145,25 @@ class AppointmentController extends Controller
     public function update(Request $request, Appointment $appointment)
     {
         //
+    }
+
+    /**
+     * Update the Status of the specific resource .
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param Appointment $appointment
+     * @return JsonResponse
+     */
+    public function updateStatus(Request $request, Appointment $appointment): JsonResponse
+    {
+        $request->validate([
+            'status' => ['required'],
+        ]);
+
+        $appointment->update([
+            'status' => $request->status,
+        ]);
+        return response()->json('Updated');
     }
 
     /**
