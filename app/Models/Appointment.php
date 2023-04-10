@@ -15,7 +15,7 @@ class Appointment extends Model
         'up_coming' => 'Up Coming',
         'validated' => 'Validated',
         'pass' => 'Pass',
-        'cancel' => 'Cancel'
+        'cancel' => 'Canceled'
     ];
 
     protected $guarded = [];
