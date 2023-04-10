@@ -29,6 +29,8 @@ import BookAppointmentIndex from "@/Pages/Patients/BookAppointmentIndex";
 import PatientAppointmentIndex from "@/Pages/Patients/AppointmentIndex";
 import PatientAppointmentShow from "@/Pages/Patients/PatientAppointmentShow";
 import AppointmentDetail from "@/Pages/Staff/Appointment/AppointmentDetails";
+import PatientAppointmentPass from "@/Pages/Patients/AppointmentPass";
+import PatientAppointmentUpComing from "@/Pages/Patients/AppointmentUpComing";
 
 function Routers() {
 
@@ -97,6 +99,8 @@ function Routers() {
                         <Route index element={<h1> Patient Profile</h1>}/>
                         <Route path="personnel" element={<PersonnelIndex/>}/>
                         <Route path="appointment" element={<PatientAppointmentIndex/>}/>
+                        <Route path="appointment/pass" element={<PatientAppointmentPass/>}/>
+                        <Route path="appointment/up_coming" element={<PatientAppointmentUpComing/>}/>
                         <Route path="personnel/book-appointment" element={<BookAppointmentIndex/>}/>
                         <Route path="appointment/update/:id" element={<PatientAppointmentShow/>}/>
                     </Route>
