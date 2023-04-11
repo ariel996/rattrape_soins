@@ -15,7 +15,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $with = ['role'];
+    protected $with = ['role','address'];
     /**
      * The attributes that are mass assignable.
      *
@@ -76,10 +76,19 @@ class User extends Authenticatable
         return $this->hasOne(Personnel::class);
     }
     /**
-     * @return BelongsTo
+     * @return HasOne
      */
-    public function patient(): BelongsTo
+    public function patient(): HasOne
     {
-        return $this->belongsTo(Patient::class);
+        return $this->hasOne(Patient::class);
+    }
+
+    /**
+     * get the address of the user
+     * @return HasOne
+     */
+    public function address(): HasOne
+    {
+        return $this->hasOne(Adress::class);
     }
 }

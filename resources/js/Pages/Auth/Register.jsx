@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect} from "react-redux";
 import {useForm} from "react-hook-form";
 import PropTypes from "prop-types";
@@ -8,8 +8,14 @@ import InputError from "@/Components/InputError";
 import GuestLayout from "@/Layouts/GuestLayout";
 import {Link} from 'react-router-dom';
 import PrimaryButton from "@/Components/PrimaryButton";
+import Http from '@/Http';
+import {useNavigate} from "react-router-dom";
+import Message from "@/Components/Message";
+import authService from "@/store/services/authService";
 
 const Register = () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const {
         register,
@@ -17,41 +23,34 @@ const Register = () => {
         formState: {errors},
     } = useForm();
 
-    const state = {
-        loading: false,
-        name: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        errors: {},
-        response: {
-            error: false,
-            message: '',
-        },
-        success: false,
-    };
+    const navigate = useNavigate();
 
     const onFormSubmit = (data) => {
-        const {name, email, password, password_confirmation} = data;
-        const credentials = {
-            name,
-            email,
-            password,
-            password_confirmation,
-        };
-
+        setLoading(true);
+        authService.register(data)
+            .then(() => {
+                navigate('/login')
+            })
+            .catch((error) => {
+                setError(error.message)
+            })
+            .finally(() => setLoading(false))
     };
 
     return (
         <GuestLayout>
+
+            {error && <Message message={error} error={error}/>}
+
             <div className="flex justify-between items-center my-10">
-                <div className="hidden w-full md:flex md:w-1/2">
+                <div className="hidden md:flex md:w-1/2">
                     <img src="/img/register-banner.png" alt="Login banner"/>
                 </div>
                 <div className="w-full md:w-1/2">
-                    <h1 className="text-center">Créez votre compte pour beneficier de tous nos services  </h1>
+                    <h1 className="text-center">Créez votre compte pour beneficier de tous nos services </h1>
                     <div className="flex justify-center">
-                        <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+                        <div
+                            className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                             <form onSubmit={handleSubmit(onFormSubmit)}>
                                 <div className="mt-4">
                                     <InputLabel htmlFor="name" value="Name"/>
@@ -84,6 +83,36 @@ const Register = () => {
                                 </div>
 
                                 <div className="mt-4">
+                                    <InputLabel htmlFor="ville" value="Ville"/>
+                                    <TextInput
+                                        id="ville"
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        autoComplete="ville"
+                                        validationFailed={errors.ville}
+                                        {...(register("ville", {required: true}))}
+                                    />
+                                    {errors.ville && (
+                                        <InputError message="Votre ville est requis ici " className="mt-2"/>
+                                    )}
+                                </div>
+
+                                <div className="mt-4">
+                                    <InputLabel htmlFor="ville" value="Quartier"/>
+                                    <TextInput
+                                        id="quartier"
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        autoComplete="quartier"
+                                        validationFailed={errors.quartier}
+                                        {...(register("quartier", {required: true}))}
+                                    />
+                                    {errors.ville && (
+                                        <InputError message="Votre Quartier est requis ici" className="mt-2"/>
+                                    )}
+                                </div>
+
+                                <div className="mt-4">
                                     <InputLabel htmlFor="email" value="Date de naissance"/>
 
                                     <TextInput
@@ -102,7 +131,6 @@ const Register = () => {
 
                                 <div className="mt-4">
                                     <InputLabel htmlFor="password" value="Mot de pass"/>
-
                                     <TextInput
                                         id="password"
                                         type="password"
@@ -144,7 +172,7 @@ const Register = () => {
                                     >
                                         Se connecter?
                                     </Link>
-                                    <PrimaryButton className="" disabled={state.loading}>
+                                    <PrimaryButton className="" disabled={loading}>
                                         Register
                                     </PrimaryButton>
                                 </div>
@@ -159,8 +187,6 @@ const Register = () => {
 
 }
 
-Register.propTypes = {
-
-};
+Register.propTypes = {};
 
 export default Register;
