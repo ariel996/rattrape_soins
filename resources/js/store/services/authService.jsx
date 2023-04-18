@@ -1,11 +1,7 @@
 import Http, {setHeader} from '../../Http';
 
-const register = (username, email, password) => {
-    return Http.post("signup", {
-        name,
-        email,
-        password,
-    });
+const register = (data) => {
+    return Http.post('/api/patient/register', data);
 };
 
 const login = (email, password) => {

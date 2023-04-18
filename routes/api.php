@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login']);
 
+//patient register
+Route::post('patient/register', [PatientController::class, 'store']);
+
 Route::middleware(['auth:sanctum'])->group(function () {
 
     // Admin
