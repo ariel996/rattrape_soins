@@ -23,14 +23,24 @@ export default function Navbar(props) {
                         Ratrapage Soin
                     </Link>
 
-                    <Link
-                        className={
-                            "bg-white text-gray-800 active:bg-gray-100 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none"
-                        }
-                        to="/login"
-                    >
-                        <i className="fa fa-user pr-1"/> Login
-                    </Link>
+                    <div className="flex gap-3">
+                        <Link
+                            className={
+                                "bg-white text-gray-800 active:bg-gray-100 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none"
+                            }
+                            to="/register"
+                        >
+                            <i className="fa fa-plus pr-1"/> Register
+                        </Link>
+                        <Link
+                            className={
+                                "bg-white text-gray-800 active:bg-gray-100 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none"
+                            }
+                            to="/login"
+                        >
+                            <i className="fa fa-user pr-1"/> Login
+                        </Link>
+                    </div>
 
                 </div>
             </div>

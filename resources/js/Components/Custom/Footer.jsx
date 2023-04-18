@@ -59,6 +59,12 @@ export default function Footer() {
                                             to="/login">Se Conneter
                                         </Link>
                                     </li>
+                                    <li>
+                                        <Link
+                                            className="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm"
+                                            to="/login">Register
+                                        </Link>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
