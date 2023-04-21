@@ -2,6 +2,7 @@ import React from "react";
 
 import UserDropdown from "./UserDropdown";
 import {Link} from "react-router-dom";
+import Dropdown from "@/Components/Dropdown";
 
 export default function Navbar({user}) {
     return (
@@ -38,7 +39,32 @@ export default function Navbar({user}) {
                     </form>
                     {/* User */}
                     <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
-                        <UserDropdown/>
+                        <Dropdown>
+                            <Dropdown.Trigger>
+                                        <span className="inline-flex rounded-md">
+                                            <button
+                                                type="button"
+                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                            >
+                                                <span
+                                                    className="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
+                                                    <img
+                                                        alt="..."
+                                                        className="w-full rounded-full align-middle border-none shadow-lg"
+                                                        src={"/img/user.png"}
+                                                    />
+                                                  </span>
+                                            </button>
+                                        </span>
+                            </Dropdown.Trigger>
+
+                            <Dropdown.Content>
+                                <Dropdown.Link to="#">Profile</Dropdown.Link>
+                                <Dropdown.Link to="/dashboard/logout">
+                                    Log Out
+                                </Dropdown.Link>
+                            </Dropdown.Content>
+                        </Dropdown>
                     </ul>
                 </div>
             </nav>
