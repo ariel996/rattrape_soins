@@ -171,6 +171,35 @@ export default function CreatePersonnelAdmin() {
                                 )}
                             </div>
                             <div className="mt-4">
+                                <InputLabel htmlFor="ville" value="Ville"/>
+                                <TextInput
+                                    id="ville"
+                                    type="text"
+                                    className="mt-1 block w-full"
+                                    autoComplete="ville"
+                                    validationFailed={errors.ville}
+                                    {...(register("ville", {required: true}))}
+                                />
+                                {errors.ville && (
+                                    <InputError message="la ville est obligatoire" className="mt-2"/>
+                                )}
+                            </div>
+
+                            <div className="mt-4">
+                                <InputLabel htmlFor="rue" value="rue"/>
+                                <TextInput
+                                    id="rue"
+                                    type="text"
+                                    className="mt-1 block w-full"
+                                    autoComplete="quartier"
+                                    validationFailed={errors.quartier}
+                                    {...(register("quartier", {required: true}))}
+                                />
+                                {errors.quartier && (
+                                    <InputError message="la rue est obligatoire" className="mt-2"/>
+                                )}
+                            </div>
+                            <div className="mt-4">
                                 <InputLabel htmlFor="email" value="Date de naissance"/>
 
                                 <TextInput
