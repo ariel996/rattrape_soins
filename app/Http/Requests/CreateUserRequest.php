@@ -30,7 +30,9 @@ class CreateUserRequest extends FormRequest
             'email' => ['required', 'unique:users,email', 'email'],
             'password' => ['required', 'confirmed'],
             'ville' => ['required'],
-            'quartier' => ['required'],
+            'rue' => ['required'],
+            'code_postal' => ['required'],
+            'commune' => ['required'],
         ];
     }
 }

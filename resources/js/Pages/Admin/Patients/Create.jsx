@@ -164,17 +164,47 @@ export default function CreatePatientAdmin() {
                             </div>
 
                             <div className="mt-4">
-                                <InputLabel htmlFor="rue" value="rue"/>
+                                <InputLabel htmlFor="text" value="Rue"/>
                                 <TextInput
                                     id="rue"
                                     type="text"
                                     className="mt-1 block w-full"
-                                    autoComplete="quartier"
-                                    validationFailed={errors.quartier}
-                                    {...(register("quartier", {required: true}))}
+                                    autoComplete="rue"
+                                    validationFailed={errors.rue}
+                                    {...(register("rue", {required: true}))}
                                 />
-                                {errors.quartier && (
+                                {errors.rue && (
                                     <InputError message="la rue est obligatoire" className="mt-2"/>
+                                )}
+                            </div>
+
+                            <div className="mt-4">
+                                <InputLabel htmlFor="text" value="Code postal"/>
+                                <TextInput
+                                    id="code_postal"
+                                    type="text"
+                                    className="mt-1 block w-full"
+                                    autoComplete="code_postal"
+                                    validationFailed={errors.rue}
+                                    {...(register("code_postal", {required: true}))}
+                                />
+                                {errors.code_postal && (
+                                    <InputError message="le Code postal est obligatoire" className="mt-2"/>
+                                )}
+                            </div>
+
+                            <div className="mt-4">
+                                <InputLabel htmlFor="text" value="Commune"/>
+                                <TextInput
+                                    id="commune"
+                                    type="text"
+                                    className="mt-1 block w-full"
+                                    autoComplete="commune"
+                                    validationFailed={errors.rue}
+                                    {...(register("commune", {required: true}))}
+                                />
+                                {errors.commune && (
+                                    <InputError message="la commune est obligatoire" className="mt-2"/>
                                 )}
                             </div>
 

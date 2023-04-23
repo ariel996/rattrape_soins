@@ -34,7 +34,9 @@ class UserAction
                 // creating the address of the user
                 Adress::query()->create([
                     'ville' => $request->ville,
-                    'quartier' => $request->quartier,
+                    'rue' => $request->rue,
+                    'code_postal' => $request->code_postal,
+                    'commune' => $request->commune,
                     'user_id' => $user->id,
                 ]);
             });
